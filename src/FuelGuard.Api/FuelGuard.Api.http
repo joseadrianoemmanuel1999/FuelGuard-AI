@@ -1,0 +1,21 @@
+@FuelGuardApi_HostAddress = http://localhost:5204
+
+GET {{FuelGuardApi_HostAddress}}/health
+Accept: application/json
+
+###
+
+GET {{FuelGuardApi_HostAddress}}/api/risk-scores
+Accept: application/json
+
+###
+
+GET {{FuelGuardApi_HostAddress}}/api/anomalies
+Accept: application/json
+
+###
+
+POST {{FuelGuardApi_HostAddress}}/api/fuel-transactions/demo/spike
+Accept: application/json
+
+###

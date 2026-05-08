@@ -1,0 +1,30 @@
+## Build
+[Bb]in/
+[Oo]bj/
+[Ll]og/
+[Ll]ogs/
+
+## Visual Studio / Rider
+.vs/
+*.user
+*.suo
+*.userosscache
+*.sln.docstates
+
+## NuGet
+*.nupkg
+**/packages/
+
+## OS
+.DS_Store
+Thumbs.db
+
+## Secrets (prefer user-secrets / env)
+**/appsettings.*.local.json
+secrets.json
+
+## Test / coverage
+TestResults/
+*.trx
+coverage*.json
+coverage*.xml
