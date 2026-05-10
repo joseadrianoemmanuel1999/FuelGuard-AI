@@ -1,0 +1,35 @@
+<section class="pt-stack-lg pb-12 px-margin-desktop max-w-[1440px] mx-auto">
+  <div class="mb-12">
+    <h2 class="font-headline-lg text-headline-lg font-black tracking-tighter text-on-background">
+      Executive Risk Intelligence
+    </h2>
+    <p class="font-body-lg text-on-surface-variant opacity-80 max-w-2xl">
+      Strategic oversight and anomaly trend analysis for global infrastructure security operations.
+    </p>
+  </div>
+  @if (report(); as r) {
+    <app-analytics-cards [cards]="r.summaryCards" />
+    <app-anomaly-chart [annotation]="r.chartAnnotation" />
+    <app-risk-map [mapImageUrl]="r.mapImageUrl" [sectors]="r.sectors" />
+  } @else {
+    <p class="font-body-md text-on-surface-variant mb-10">Loading executive intelligence…</p>
+  }
+  <footer
+    class="mt-12 py-8 border-t border-outline-variant/10 flex flex-col md:flex-row justify-between items-center gap-4 opacity-50"
+  >
+    <div class="flex items-center gap-6 flex-wrap">
+      <span class="font-data-tabular text-[10px] uppercase tracking-widest text-on-surface-variant"
+        >ENC TYPE: AES-256-GCM</span
+      >
+      <span class="font-data-tabular text-[10px] uppercase tracking-widest text-on-surface-variant"
+        >LAST SYNC: 2 SEC AGO</span
+      >
+      <span class="font-data-tabular text-[10px] uppercase tracking-widest text-on-surface-variant"
+        >LATENCY: 14MS</span
+      >
+    </div>
+    <p class="font-label-caps text-[10px] text-on-surface-variant">
+      FUELGUARD AI SECURITY SYSTEM © 2024 DEPLOYMENT B-09
+    </p>
+  </footer>
+</section>

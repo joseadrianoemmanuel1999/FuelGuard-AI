@@ -1,0 +1,44 @@
+<div
+  class="glass-panel glow-border p-stack-lg rounded-xl flex flex-col items-center justify-center text-center"
+  [@riskCardPulse]="pulseKey()"
+>
+  <h3 class="font-label-caps text-label-caps uppercase text-on-surface-variant mb-stack-md">
+    Security Threat Matrix
+  </h3>
+  <div class="relative w-48 h-48 flex items-center justify-center">
+    <svg class="w-full h-full -rotate-90" viewBox="0 0 192 192">
+      <circle
+        class="text-surface-container-highest"
+        cx="96"
+        cy="96"
+        fill="none"
+        r="88"
+        stroke="currentColor"
+        stroke-width="8"
+      ></circle>
+      <circle
+        class="text-error transition-[stroke-dashoffset] duration-700 ease-out"
+        cx="96"
+        cy="96"
+        fill="none"
+        r="88"
+        stroke="currentColor"
+        [attr.stroke-dasharray]="circumference"
+        [attr.stroke-dashoffset]="dashOffset()"
+        stroke-linecap="round"
+        stroke-width="12"
+      ></circle>
+    </svg>
+    <div class="absolute inset-0 flex flex-col items-center justify-center">
+      <span class="font-data-tabular text-[48px] font-bold text-error transition-all duration-500">{{
+        score()
+      }}</span>
+      <span class="font-label-caps text-label-caps text-on-surface-variant">RISK SCORE</span>
+    </div>
+  </div>
+  <div
+    class="mt-stack-lg px-6 py-2 bg-error-container text-on-error-container rounded-full font-label-caps text-label-caps uppercase font-bold animate-pulse"
+  >
+    {{ levelLabel() }}
+  </div>
+</div>

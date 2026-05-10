@@ -1,0 +1,37 @@
+<div class="px-margin-mobile lg:px-margin-desktop pb-margin-mobile lg:pb-margin-desktop pt-margin-mobile lg:pt-margin-desktop min-h-[calc(100vh-4rem)]">
+  <app-dashboard-chrome>
+    @if (state.errorMessage(); as err) {
+      <p
+        class="rounded-lg border border-error/40 bg-error-container/20 px-stack-md py-stack-sm font-body-md text-body-md text-on-error-container"
+        role="alert"
+      >
+        {{ err }}
+      </p>
+    }
+    <app-hero-section />
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
+      <div class="xl:col-span-4">
+        <app-risk-overview-card [score]="state.risk().score" [levelLabel]="state.risk().levelLabel" />
+      </div>
+      <div class="xl:col-span-8">
+        <app-pipeline-visualization
+          [activeStage]="state.activePipelineStage()"
+          [cpuLoadPercent]="state.cpuLoadPercent()"
+          throughputWidthClass="w-3/4"
+        />
+      </div>
+    </div>
+    <div class="grid grid-cols-1 md:grid-cols-2 gap-gutter">
+      <app-ai-investigation-panel
+        [investigation]="state.investigation()"
+        [revision]="state.investigationRevision()"
+      />
+      <app-telemetry-map-panel
+        [telemetry]="state.telemetry()"
+        [alertActive]="state.alertStateActive()"
+      />
+    </div>
+    <app-system-logs-terminal [logs]="state.logs()" />
+  </app-dashboard-chrome>
+</div>
+<app-floating-action-button />

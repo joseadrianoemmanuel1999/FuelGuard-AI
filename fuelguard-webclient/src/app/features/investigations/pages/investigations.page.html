@@ -1,0 +1,32 @@
+<div class="h-[calc(100vh-4rem)] flex overflow-hidden">
+  <section class="flex-1 p-margin-desktop overflow-y-auto">
+    <header class="mb-stack-lg">
+      <h2 class="font-headline-lg text-headline-lg font-black tracking-tighter text-on-surface">
+        Active Investigations
+      </h2>
+      <p class="font-body-md text-on-surface-variant">
+        Fuel smuggling intelligence and operational oversight.
+      </p>
+    </header>
+    <app-investigations-table
+      [investigations]="state.investigations()"
+      [selectedId]="state.selectedInvestigation()?.id ?? null"
+      (select)="onSelect($event)"
+    />
+    <div class="mt-margin-desktop grid grid-cols-12 gap-gutter">
+      <app-intelligence-chart [barHeightsPercent]="state.intelligenceBarPercents()" />
+      <app-satellite-card [description]="state.selectedInvestigation()?.satelliteNarrative ?? ''" />
+    </div>
+  </section>
+  @if (state.selectedInvestigation(); as inv) {
+    <app-investigation-detail-panel [investigation]="inv" />
+  }
+</div>
+<div class="fixed bottom-margin-desktop right-[400px] z-50">
+  <button
+    type="button"
+    class="w-14 h-14 bg-primary rounded-full shadow-lg flex items-center justify-center text-on-primary hover:scale-105 active:scale-95 transition-transform border-0 cursor-pointer"
+  >
+    <span class="material-symbols-outlined">add</span>
+  </button>
+</div>

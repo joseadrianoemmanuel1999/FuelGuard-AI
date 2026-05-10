@@ -18,6 +18,17 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAgents();
 
 builder.Services.AddControllers();
+builder.Services.AddCors(options =>
+{
+    options.AddPolicy(
+        "FuelGuardWeb",
+        policy => policy
+            .WithOrigins(
+                "http://localhost:4200",
+                "https://localhost:4200")
+            .AllowAnyHeader()
+            .AllowAnyMethod());
+});
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen(options =>
 {
@@ -49,6 +60,8 @@ app.UseSwaggerUI(options =>
 {
     options.SwaggerEndpoint("/swagger/v1/swagger.json", "FuelGuard AI v1");
 });
+
+app.UseCors("FuelGuardWeb");
 
 app.MapControllers();
 

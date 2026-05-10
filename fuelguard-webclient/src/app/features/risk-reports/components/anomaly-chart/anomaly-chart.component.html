@@ -1,0 +1,68 @@
+<div class="glass-panel rounded-xl p-stack-lg mb-10 overflow-hidden relative border border-outline-variant/20">
+  <div class="flex items-center justify-between mb-8 flex-wrap gap-stack-md">
+    <div>
+      <h3 class="font-headline-md text-on-surface flex items-center gap-2">
+        <span class="material-symbols-outlined text-primary">timeline</span>
+        Anomaly Evolution
+      </h3>
+      <p class="font-body-md text-on-surface-variant">Evolutionary threat detection cycles (Last 30 Days)</p>
+    </div>
+    <div class="flex gap-2">
+      <button
+        type="button"
+        class="px-4 py-1.5 bg-surface-container-highest text-on-surface font-label-caps text-[10px] rounded hover:bg-surface-variant transition-colors border-0 cursor-pointer"
+      >
+        EXPORT TSV
+      </button>
+      <button
+        type="button"
+        class="px-4 py-1.5 bg-primary/10 text-primary border border-primary/20 font-label-caps text-[10px] rounded hover:bg-primary/20 transition-colors border-solid cursor-pointer"
+      >
+        TIMELINE FILTERS
+      </button>
+    </div>
+  </div>
+  <div class="h-[320px] w-full relative group">
+    <svg
+      class="absolute inset-0 w-full h-full drop-shadow-[0_0_12px_rgba(192,193,255,0.4)]"
+      preserveAspectRatio="none"
+      viewBox="0 0 1000 300"
+    >
+      <path
+        d="M0,280 L100,240 L200,260 L300,180 L400,210 L500,120 L600,150 L700,80 L800,100 L900,40 L1000,60"
+        fill="none"
+        stroke="#c0c1ff"
+        stroke-linecap="round"
+        stroke-width="3"
+      />
+      <path
+        d="M0,280 L100,240 L200,260 L300,180 L400,210 L500,120 L600,150 L700,80 L800,100 L900,40 L1000,60 L1000,300 L0,300 Z"
+        fill="url(#grad1)"
+        opacity="0.1"
+      />
+      <defs>
+        <linearGradient id="grad1" x1="0%" x2="0%" y1="0%" y2="100%">
+          <stop offset="0%" style="stop-color: #c0c1ff; stop-opacity: 1" />
+          <stop offset="100%" style="stop-color: #c0c1ff; stop-opacity: 0" />
+        </linearGradient>
+      </defs>
+      <circle class="animate-pulse" cx="500" cy="120" fill="#c0c1ff" r="6" />
+      <circle class="animate-pulse" cx="900" cy="40" fill="#ffb4ab" r="6" />
+    </svg>
+    <div
+      class="absolute top-[30px] left-[880px] bg-error-container text-on-error-container p-3 rounded-lg border border-error/30 shadow-2xl backdrop-blur-md max-w-[180px] max-lg:left-auto max-lg:right-2"
+    >
+      <p class="font-label-caps text-[10px] mb-1">DETECTION SPIKE</p>
+      <p class="text-[11px] font-body-md leading-snug">{{ annotation() }}</p>
+    </div>
+  </div>
+  <div
+    class="flex justify-between mt-4 font-data-tabular text-[10px] text-on-surface-variant opacity-50 uppercase tracking-widest px-2 flex-wrap gap-2"
+  >
+    <span>30 Days Ago</span>
+    <span>21 Days Ago</span>
+    <span>14 Days Ago</span>
+    <span>7 Days Ago</span>
+    <span>T-0 REALTIME</span>
+  </div>
+</div>

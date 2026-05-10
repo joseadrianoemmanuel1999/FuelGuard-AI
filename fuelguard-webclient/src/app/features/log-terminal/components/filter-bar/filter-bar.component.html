@@ -1,0 +1,108 @@
+<section class="p-gutter flex flex-col gap-stack-md bg-surface-container-low/50 border-b border-outline-variant/20">
+  <div class="flex items-center gap-stack-sm overflow-x-auto">
+    <button
+      type="button"
+      class="px-4 py-1.5 rounded-full bg-primary-container/20 text-primary border border-primary/30 font-label-caps text-label-caps whitespace-nowrap"
+    >
+      Event Bus
+    </button>
+    <button
+      type="button"
+      class="px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-on-surface border border-transparent font-label-caps text-label-caps whitespace-nowrap transition-all"
+    >
+      AI Core
+    </button>
+    <button
+      type="button"
+      class="px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-on-surface border border-transparent font-label-caps text-label-caps whitespace-nowrap transition-all"
+    >
+      Risk Engine
+    </button>
+    <button
+      type="button"
+      class="px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-on-surface border border-transparent font-label-caps text-label-caps whitespace-nowrap transition-all"
+    >
+      Telemetry
+    </button>
+    <button
+      type="button"
+      class="px-4 py-1.5 rounded-full bg-surface-container-highest text-on-surface-variant hover:text-on-surface border border-transparent font-label-caps text-label-caps whitespace-nowrap transition-all"
+    >
+      Alerts
+    </button>
+  </div>
+  <div class="flex items-center justify-between flex-wrap gap-stack-md">
+    <div class="flex items-center gap-stack-md flex-wrap">
+      <span class="text-label-caps font-label-caps text-outline uppercase tracking-widest text-[10px]"
+        >Filter View</span
+      >
+      <div class="flex bg-surface-container rounded-lg p-unit border border-outline-variant/30">
+        <button
+          type="button"
+          class="px-3 py-1 rounded-md text-xs font-bold font-label-caps transition-colors"
+          [class.bg-surface-container-highest]="severity() === 'all'"
+          [class.text-on-surface]="severity() === 'all'"
+          [class.text-on-surface-variant]="severity() !== 'all'"
+          (click)="severity.set('all')"
+        >
+          All
+        </button>
+        <button
+          type="button"
+          class="px-3 py-1 rounded-md text-xs font-label-caps transition-colors"
+          [class.bg-surface-container-highest]="severity() === 'warning'"
+          [class.text-on-surface]="severity() === 'warning'"
+          [class.text-on-surface-variant]="severity() !== 'warning'"
+          (click)="severity.set('warning')"
+        >
+          Warning
+        </button>
+        <button
+          type="button"
+          class="px-3 py-1 rounded-md text-xs font-label-caps transition-colors"
+          [class.bg-surface-container-highest]="severity() === 'critical'"
+          [class.text-on-surface]="severity() === 'critical'"
+          [class.text-on-surface-variant]="severity() !== 'critical'"
+          (click)="severity.set('critical')"
+        >
+          Critical
+        </button>
+      </div>
+      <div class="h-4 w-px bg-outline-variant/30 hidden sm:block"></div>
+      <div class="flex items-center gap-stack-sm">
+        <span class="text-[11px] font-label-caps text-on-surface-variant">Live Mode</span>
+        <button
+          type="button"
+          role="switch"
+          [attr.aria-checked]="liveMode()"
+          class="w-8 h-4 bg-tertiary/20 border border-tertiary/40 rounded-full relative cursor-pointer transition-colors"
+          (click)="liveMode.set(!liveMode())"
+        >
+          <span
+            class="absolute top-0.5 w-2.5 h-2.5 bg-tertiary rounded-full transition-all"
+            [class.left-0.5]="!liveMode()"
+            [class.right-0.5]="liveMode()"
+          ></span>
+        </button>
+      </div>
+    </div>
+    <div class="flex items-center gap-stack-md">
+      <button
+        type="button"
+        class="flex items-center gap-unit text-xs text-on-surface-variant hover:text-primary transition-all font-label-caps bg-transparent border-0 p-0 cursor-pointer"
+        (click)="exportClick.emit()"
+      >
+        <span class="material-symbols-outlined text-[16px]">download</span>
+        Export .log
+      </button>
+      <button
+        type="button"
+        class="flex items-center gap-unit text-xs text-on-surface-variant hover:text-error transition-all font-label-caps bg-transparent border-0 p-0 cursor-pointer"
+        (click)="clearClick.emit()"
+      >
+        <span class="material-symbols-outlined text-[16px]">delete</span>
+        Clear Terminal
+      </button>
+    </div>
+  </div>
+</section>

@@ -61,9 +61,10 @@ public sealed class DemoDataSeeder(ILogger<DemoDataSeeder> logger)
             new RiskScore
             {
                 CompanyId = stationId,
-                Score = 8,
-                Level = RiskLevel.Low,
-                Reason = "Seed baseline: retail station profile."
+                Score = 87,
+                Level = RiskLevel.Critical,
+                Reason =
+                    "Command-center posture: elevated siphoning correlation — Southern Sector telemetry mismatch (demo seed)."
             });
 
         await db.SaveChangesAsync(cancellationToken);

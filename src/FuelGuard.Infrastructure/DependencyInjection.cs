@@ -8,6 +8,7 @@ using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
+using Microsoft.Extensions.Options;
 
 namespace FuelGuard.Infrastructure;
 
@@ -48,7 +49,23 @@ public static class DependencyInjection
 
         services.AddSingleton<DemoDataSeeder>();
 
-        services.AddSingleton<IAiService, NoOpAiService>();
+        services.Configure<AiOptions>(configuration.GetSection(AiOptions.SectionName));
+        services.AddHttpClient(HuggingFaceAiService.HttpClientName, (sp, client) =>
+        {
+            var opts = sp.GetRequiredService<IOptions<AiOptions>>().Value;
+            var seconds = Math.Clamp(opts.RequestTimeoutSeconds, 15, 180);
+            client.Timeout = TimeSpan.FromSeconds(seconds);
+        });
+
+        services.AddSingleton<HuggingFaceAiService>();
+        services.AddSingleton<IAiService>(sp =>
+        {
+            var opts = sp.GetRequiredService<IOptions<AiOptions>>().Value;
+            if (string.IsNullOrWhiteSpace(opts.ApiKey))
+                return new NoOpAiService();
+
+            return sp.GetRequiredService<HuggingFaceAiService>();
+        });
 
         return services;
     }

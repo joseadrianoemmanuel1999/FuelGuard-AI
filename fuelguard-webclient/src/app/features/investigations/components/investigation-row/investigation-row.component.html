@@ -1,0 +1,31 @@
+<td class="px-stack-md py-stack-sm">
+  @if (investigation().companySubtitle) {
+    <div class="flex flex-col">
+      <span class="text-on-surface font-bold">{{ investigation().company }}</span>
+      <span class="text-[10px] text-on-surface-variant">{{ investigation().companySubtitle }}</span>
+    </div>
+  } @else {
+    <span class="text-on-surface font-bold">{{ investigation().company }}</span>
+  }
+</td>
+<td class="px-stack-md py-stack-sm">
+  <span [class]="riskBadgeClass()">{{ investigation().riskLevel }}</span>
+</td>
+<td class="px-stack-md py-stack-sm">
+  <div class="w-24 bg-surface-container-highest rounded-full h-1.5 overflow-hidden">
+    <div class="h-full" [class]="confidenceFillClass()" [style.width.%]="investigation().confidence"></div>
+  </div>
+  <span [class]="confidenceLabelClass()">{{ investigation().confidence }}% MATCH</span>
+</td>
+<td class="px-stack-md py-stack-sm text-on-surface-variant">{{ investigation().region }}</td>
+<td class="px-stack-md py-stack-sm">
+  @if (investigation().statusActiveDot) {
+    <div class="flex items-center gap-unit">
+      <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+      <span class="text-on-surface">{{ investigation().status }}</span>
+    </div>
+  } @else {
+    <span class="text-on-surface-variant">{{ investigation().status }}</span>
+  }
+</td>
+<td class="px-stack-md py-stack-sm text-on-surface-variant">{{ investigation().lastActivity }}</td>

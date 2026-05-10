@@ -1,0 +1,11 @@
+<div class="col-span-8 glass-panel rounded-lg p-stack-md flex flex-col gap-stack-md">
+  <div class="flex justify-between items-center">
+    <h3 class="font-label-caps text-label-caps text-primary">Intelligence Flow Visualization</h3>
+    <span class="text-xs text-on-surface-variant">Real-time Node Saturation</span>
+  </div>
+  <div class="h-48 bg-surface-dim/50 rounded flex items-end justify-between p-stack-sm gap-unit">
+    @for (h of barHeightsPercent(); track $index) {
+      <div [class]="shellClass($index)" [style.height.%]="h"></div>
+    }
+  </div>
+</div>

@@ -1,0 +1,24 @@
+<div class="flex-1 bg-surface-dim border border-outline-variant/30 rounded-xl inner-glow flex flex-col shadow-2xl relative overflow-hidden">
+  <div
+    #scrollHost
+    class="flex-1 terminal-scroll overflow-y-auto font-data-tabular text-data-tabular p-stack-md space-y-unit max-h-[min(60vh,520px)]"
+  >
+    @for (line of lines(); track line.timestamp + line.category + line.message) {
+      <app-log-item [line]="line" />
+    }
+  </div>
+  <div
+    class="p-stack-md border-t border-outline-variant/20 bg-surface-container-lowest/80 backdrop-blur-sm flex items-center gap-stack-sm font-data-tabular"
+  >
+    <span class="text-primary font-bold">root&#64;fuelguard-ai:~$</span>
+    <div class="flex-1 flex items-center min-w-0">
+      <span class="text-on-surface truncate">tail -f /var/log/ai-core.log --severity="critical"</span>
+      <span class="cursor-blink shrink-0"></span>
+    </div>
+    <div class="flex items-center gap-stack-md shrink-0">
+      <span class="text-outline-variant text-[10px] font-label-caps">UTF-8</span>
+      <span class="text-outline-variant text-[10px] font-label-caps">LN 142, COL 58</span>
+    </div>
+  </div>
+  <div class="absolute inset-0 pointer-events-none bg-gradient-to-t from-black/20 to-transparent"></div>
+</div>

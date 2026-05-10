@@ -1,0 +1,8 @@
+@if (showActiveDot()) {
+  <div class="flex items-center gap-unit">
+    <span class="w-1.5 h-1.5 rounded-full bg-tertiary"></span>
+    <span class="text-on-surface">{{ label() }}</span>
+  </div>
+} @else {
+  <span class="text-on-surface-variant">{{ label() }}</span>
+}

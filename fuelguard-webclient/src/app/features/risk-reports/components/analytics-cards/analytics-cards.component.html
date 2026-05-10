@@ -1,0 +1,46 @@
+<div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-gutter mb-10">
+  @for (c of cards(); track c.label) {
+    <div
+      class="glass-panel p-stack-lg rounded-xl flex flex-col justify-between h-40 border-l-4 relative overflow-hidden"
+      [class]="borderClass(c.borderTone)"
+    >
+      <div class="flex justify-between items-start z-10">
+        <span class="font-label-caps text-on-surface-variant opacity-70">{{ c.label }}</span>
+        <span class="material-symbols-outlined" [class]="iconClass(c.borderTone)">{{ c.iconName }}</span>
+      </div>
+      <div class="z-10">
+        @if (c.value) {
+          <p class="font-display-lg text-[42px] leading-none mb-1 text-on-surface">{{ c.value }}</p>
+        }
+        @if (c.subtext) {
+          <p
+            class="font-data-tabular flex items-center gap-1 text-[11px]"
+            [class]="subtextClass(c.borderTone)"
+          >
+            {{ c.subtext }}
+          </p>
+        }
+        @if (c.label === 'AI CONFIDENCE AVG' && c.value) {
+          <div class="w-full h-1 bg-surface-container-highest rounded-full overflow-hidden mt-2">
+            <div
+              class="h-full bg-tertiary glow-accent"
+              [style.width]="c.value"
+            ></div>
+          </div>
+        }
+        @if (c.label === 'HIGH-RISK SECTORS') {
+          <div class="z-10 flex gap-2 flex-wrap mt-1">
+            <span
+              class="px-2 py-1 bg-error/15 text-error rounded-full font-label-caps text-[9px] border border-error/20"
+              >NORTH-SEA</span
+            >
+            <span
+              class="px-2 py-1 bg-primary/15 text-primary rounded-full font-label-caps text-[9px] border border-primary/20"
+              >BALTIC</span
+            >
+          </div>
+        }
+      </div>
+    </div>
+  }
+</div>

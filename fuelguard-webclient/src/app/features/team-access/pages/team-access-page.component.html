@@ -1,0 +1,18 @@
+<main class="p-margin-desktop h-[calc(100vh-4rem)] overflow-y-auto grid grid-cols-12 gap-gutter max-w-[1600px] mx-auto">
+  <div class="col-span-12 mb-stack-md">
+    <h2 class="font-headline-lg text-headline-lg text-on-surface">Mission Control Personnel</h2>
+    <p class="text-body-lg text-on-surface-variant">Operational access and AI oversight management</p>
+  </div>
+  @if (directory(); as d) {
+    <div class="col-span-12 lg:col-span-9 grid grid-cols-1 md:grid-cols-2 gap-stack-md">
+      @for (m of d.members; track m.name) {
+        <app-user-card [member]="m" />
+      }
+    </div>
+    <aside class="col-span-12 lg:col-span-3 flex flex-col gap-stack-md">
+      <app-ai-oversight-panel [oversight]="d.aiOversight" [ledger]="d.ledger" />
+    </aside>
+  } @else {
+    <p class="col-span-12 font-body-md text-on-surface-variant">Loading personnel directory…</p>
+  }
+</main>

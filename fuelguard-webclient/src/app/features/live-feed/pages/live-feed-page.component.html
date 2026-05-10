@@ -1,0 +1,61 @@
+<div class="p-margin-desktop max-w-container-max mx-auto">
+  <header class="mb-stack-lg flex flex-col lg:flex-row lg:items-end lg:justify-between gap-stack-md">
+    <div>
+      <h2 class="font-headline-lg text-headline-lg font-bold text-on-surface">Live Threat Feed</h2>
+      <p class="font-body-md text-on-surface-variant">Real-time anomaly intelligence and event stream.</p>
+    </div>
+    <div class="flex items-center gap-stack-md font-label-caps text-label-caps">
+      <span class="flex items-center gap-unit text-tertiary">
+        <span class="w-2 h-2 rounded-full bg-tertiary"></span>
+        System Active
+      </span>
+      <span class="flex items-center gap-unit text-on-surface-variant">
+        <span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+        AI Active
+      </span>
+    </div>
+  </header>
+  <div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
+    <div class="xl:col-span-7">
+      <app-live-feed-stream [events]="events()" />
+    </div>
+    <div class="xl:col-span-5 space-y-stack-md">
+      <div class="glass-panel rounded-xl p-stack-md border border-outline-variant/20">
+        <div class="flex justify-between items-start mb-stack-sm">
+          <span class="font-label-caps text-on-surface-variant">AI Confidence Index</span>
+          <span class="material-symbols-outlined text-tertiary">shield</span>
+        </div>
+        <p class="font-display-lg text-[36px] font-bold text-on-surface">{{ aiConfidenceIndex() }}%</p>
+        <p class="text-[11px] font-data-tabular text-tertiary mt-1">+1.2% FROM PREVIOUS HOUR</p>
+      </div>
+      <div class="glass-panel rounded-xl p-stack-md border border-outline-variant/20 space-y-stack-sm">
+        <h3 class="font-label-caps text-label-caps text-on-surface">Pipeline Throughput</h3>
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>Data Ingestion</span><span class="font-data-tabular text-primary">2.4 TB/s</span>
+          </div>
+          <div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+            <div class="h-full bg-primary w-4/5"></div>
+          </div>
+        </div>
+        <div>
+          <div class="flex justify-between text-xs mb-1">
+            <span>Processing Latency</span><span class="font-data-tabular text-tertiary">14ms</span>
+          </div>
+          <div class="h-1.5 bg-surface-container-highest rounded-full overflow-hidden">
+            <div class="h-full bg-tertiary w-1/3"></div>
+          </div>
+        </div>
+      </div>
+      <div class="glass-panel rounded-xl p-stack-md border border-outline-variant/20">
+        <h3 class="font-label-caps text-label-caps mb-stack-sm">Active Investigations</h3>
+        <p class="font-headline-md text-2xl font-bold text-on-surface mb-2">
+          {{ (state.investigations()?.rows?.length ?? 8).toString().padStart(2, '0') }} OPEN
+        </p>
+        <p class="text-xs text-on-surface-variant">
+          Synced with command center — run simulation to refresh intelligence graph.
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

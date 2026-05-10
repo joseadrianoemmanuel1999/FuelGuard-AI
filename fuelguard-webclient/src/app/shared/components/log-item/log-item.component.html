@@ -1,0 +1,6 @@
+<div [class]="rowClass()">
+  <span class="text-outline/50 min-w-[140px]">{{ line().timestamp }}</span>
+  <span [class]="levelClass() + ' min-w-[60px]'">{{ line().level }}</span>
+  <span [class]="categoryClass() + ' min-w-[80px]'">{{ line().category }}</span>
+  <span [class]="messageClass()">{{ line().message }}</span>
+</div>

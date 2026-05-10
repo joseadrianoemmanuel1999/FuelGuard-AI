@@ -1,0 +1,96 @@
+<aside
+  class="w-96 bg-surface-container border-l border-outline-variant/30 flex flex-col h-full shadow-2xl"
+>
+  <div class="p-stack-md border-b border-outline-variant/30 flex justify-between items-center bg-surface-container-high">
+    <div class="flex items-center gap-stack-sm">
+      <span class="material-symbols-outlined text-primary" style="font-variation-settings: 'FILL' 1"
+        >shield_person</span
+      >
+      <span class="font-label-caps text-label-caps">Case Details: {{ investigation().detail.caseId }}</span>
+    </div>
+    <button
+      type="button"
+      class="material-symbols-outlined text-on-surface-variant hover:text-on-surface bg-transparent border-0 p-0 cursor-pointer"
+    >
+      close
+    </button>
+  </div>
+  <div class="flex-1 overflow-y-auto p-stack-md space-y-stack-lg">
+    <div class="space-y-stack-xs">
+      <h4 class="font-label-caps text-label-caps text-tertiary">AI Narrative Explanation</h4>
+      <div class="bg-surface-container-low p-stack-sm rounded border border-outline-variant/20">
+        <p class="text-xs leading-relaxed text-on-surface/90" [innerHTML]="safeNarrative()"></p>
+      </div>
+    </div>
+    <div class="space-y-stack-md">
+      <h4 class="font-label-caps text-label-caps text-on-surface-variant">Anomaly Timeline</h4>
+      <div class="relative pl-stack-md border-l border-outline-variant/30 space-y-stack-lg">
+        @for (ev of investigation().detail.timeline; track ev.timeUtc + ev.title) {
+          <div class="relative">
+            <span
+              class="absolute -left-[21px] top-1 w-2 h-2 rounded-full border border-background"
+              [class]="dotClass(ev.dotTone)"
+            ></span>
+            <p class="text-[11px] font-data-tabular text-on-surface-variant">{{ ev.timeUtc }}</p>
+            <p class="text-xs font-bold">{{ ev.title }}</p>
+          </div>
+        }
+      </div>
+    </div>
+    <div class="space-y-stack-xs">
+      <h4 class="font-label-caps text-label-caps text-on-surface-variant">
+        Telemetry: {{ investigation().detail.telemetryNodeLabel }} Flow Rate
+      </h4>
+      <div class="bg-black/40 h-32 rounded border border-outline-variant/20 flex flex-col p-unit">
+        <div class="flex justify-between text-[10px] text-tertiary-fixed font-data-tabular mb-1">
+          <span>NORMAL: {{ investigation().detail.normalFlowLitersPerSecond }} L/s</span>
+          <span class="text-error">ACTUAL: {{ investigation().detail.actualFlowLitersPerSecond }} L/s</span>
+        </div>
+        <div class="flex-1 flex items-end gap-[1px]">
+          @for (pct of investigation().detail.telemetryBarsPercent; track $index) {
+            <div [class]="telemetryBarClass($index)" [style.height.%]="pct"></div>
+          }
+        </div>
+      </div>
+    </div>
+    <div class="space-y-stack-md pt-stack-sm">
+      <h4 class="font-label-caps text-label-caps text-error">Recommended Actions</h4>
+      <div class="flex flex-col gap-stack-sm">
+        <button
+          type="button"
+          class="flex items-center justify-between w-full p-stack-sm bg-surface-container-highest rounded border border-outline-variant hover:bg-primary-container hover:text-on-primary-container transition-all"
+          (click)="deployDrone()"
+        >
+          <div class="flex items-center gap-stack-sm">
+            <span class="material-symbols-outlined">airplanemode_active</span>
+            <span class="text-xs font-bold">Deploy Surveillance Drone</span>
+          </div>
+          <span class="material-symbols-outlined text-sm">chevron_right</span>
+        </button>
+        <button
+          type="button"
+          class="flex items-center justify-between w-full p-stack-sm bg-error-container/20 text-error rounded border border-error/30 hover:bg-error hover:text-on-error transition-all"
+          (click)="shutValve()"
+        >
+          <div class="flex items-center gap-stack-sm">
+            <span class="material-symbols-outlined">emergency_home</span>
+            <span class="text-xs font-bold"
+              >Emergency Shut Valve {{ investigation().detail.telemetryNodeLabel }}</span
+            >
+          </div>
+          <span class="material-symbols-outlined text-sm">lock_person</span>
+        </button>
+      </div>
+    </div>
+  </div>
+  <div class="p-stack-md bg-surface-container-lowest border-t border-outline-variant/30">
+    <button
+      type="button"
+      class="w-full py-stack-md bg-primary text-on-primary font-bold rounded shadow-[0_0_20px_rgba(192,193,255,0.3)] active:scale-95 transition-transform flex items-center justify-center gap-stack-sm"
+      (click)="escalateCase()"
+    >
+      <span class="material-symbols-outlined">security</span>
+      Escalate to Federal Oversight
+    </button>
+  </div>
+</aside>

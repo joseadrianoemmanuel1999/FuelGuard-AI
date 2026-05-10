@@ -1,0 +1,30 @@
+<div class="ml-0 mt-0 h-[calc(100vh-4rem)] flex flex-col bg-surface-container-lowest overflow-hidden">
+  <app-filter-bar
+    [severity]="severity()"
+    (severityChange)="severity.set($event)"
+    (exportClick)="onExport()"
+    (clearClick)="onClear()"
+  />
+  <div class="flex-1 overflow-hidden p-stack-md flex flex-col min-h-0">
+    <app-terminal-log-view [lines]="filteredLines()" />
+    <div class="mt-stack-sm flex items-center justify-between px-unit flex-wrap gap-stack-sm">
+      <div class="flex items-center gap-stack-lg flex-wrap">
+        <div class="flex items-center gap-unit">
+          <div class="w-2 h-2 rounded-full bg-tertiary shadow-[0_0_8px_#4edea3]"></div>
+          <span class="text-[11px] font-label-caps text-on-surface-variant">AI ENGINE: STABLE</span>
+        </div>
+        <div class="flex items-center gap-unit">
+          <div class="w-2 h-2 rounded-full bg-primary shadow-[0_0_8px_#c0c1ff]"></div>
+          <span class="text-[11px] font-label-caps text-on-surface-variant">OPS/SEC: 12,482</span>
+        </div>
+        <div class="flex items-center gap-unit">
+          <div class="w-2 h-2 rounded-full bg-[#FFAB40] shadow-[0_0_8px_#FFAB40]"></div>
+          <span class="text-[11px] font-label-caps text-on-surface-variant">THREATS BLOCKED: 3</span>
+        </div>
+      </div>
+      <div class="text-[11px] font-label-caps text-outline">
+        LAST REFRESH: {{ lastRefresh() | date : 'dd-MMM-yyyy HH:mm:ss' : 'UTC' }}
+      </div>
+    </div>
+  </div>
+</div>

@@ -1,0 +1,119 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+/* Custom element hosts default to inline; ensure the app fills the viewport. */
+app-root {
+  display: block;
+  min-height: 100%;
+}
+
+.material-symbols-outlined {
+  font-variation-settings:
+    'FILL' 0,
+    'wght' 400,
+    'GRAD' 0,
+    'opsz' 24;
+}
+
+.glass-panel {
+  backdrop-filter: blur(12px);
+  background: rgba(22, 27, 34, 0.8);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.glow-border {
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+
+.animate-pulse-slow {
+  animation: fg-pulse 3s cubic-bezier(0.4, 0, 0.6, 1) infinite;
+}
+
+@keyframes fg-pulse {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0.5;
+  }
+}
+
+.pipeline-node-glow {
+  animation: fg-node-glow 2.4s ease-in-out infinite;
+}
+
+@keyframes fg-node-glow {
+  0%,
+  100% {
+    box-shadow:
+      0 0 0 0 rgba(192, 193, 255, 0),
+      0 0 0 0 rgba(255, 180, 171, 0);
+  }
+  50% {
+    box-shadow:
+      0 0 20px 1px rgba(192, 193, 255, 0.25),
+      0 0 28px 2px rgba(255, 180, 171, 0.12);
+  }
+}
+
+.inner-glow {
+  box-shadow: inset 0 1px 0 0 rgba(255, 255, 255, 0.05);
+}
+
+.glass-card {
+  background: rgba(22, 27, 34, 0.8);
+  backdrop-filter: blur(12px);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.bloom-indicator {
+  box-shadow: 0 0 12px currentColor;
+}
+
+.glow-accent {
+  box-shadow: 0 0 20px rgba(192, 193, 255, 0.15);
+}
+
+.risk-glow-high {
+  text-shadow: 0 0 12px rgba(255, 180, 171, 0.4);
+}
+
+.risk-glow-med {
+  text-shadow: 0 0 12px rgba(192, 193, 255, 0.4);
+}
+
+.terminal-scroll::-webkit-scrollbar {
+  width: 6px;
+}
+.terminal-scroll::-webkit-scrollbar-track {
+  background: #0b0f10;
+}
+.terminal-scroll::-webkit-scrollbar-thumb {
+  background: #323537;
+  border-radius: 4px;
+}
+.terminal-scroll::-webkit-scrollbar-thumb:hover {
+  background: #464554;
+}
+
+.cursor-blink {
+  display: inline-block;
+  width: 8px;
+  height: 18px;
+  background-color: #c0c1ff;
+  animation: fg-blink 1s step-end infinite;
+  vertical-align: middle;
+  margin-left: 4px;
+}
+
+@keyframes fg-blink {
+  0%,
+  100% {
+    opacity: 1;
+  }
+  50% {
+    opacity: 0;
+  }
+}

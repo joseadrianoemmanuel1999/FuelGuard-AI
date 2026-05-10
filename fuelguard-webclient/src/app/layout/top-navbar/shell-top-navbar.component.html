@@ -1,0 +1,62 @@
+<header
+  class="fixed top-0 right-0 left-0 lg:left-64 h-16 bg-surface/80 backdrop-blur-xl border-b border-outline-variant/30 flex items-center justify-between px-margin-mobile lg:px-margin-desktop z-40"
+>
+  <div class="flex items-center gap-stack-lg min-w-0">
+    <button
+      type="button"
+      class="lg:hidden p-2 rounded-lg text-on-surface-variant hover:text-primary hover:bg-surface-container-high transition-colors shrink-0"
+      (click)="menuToggle.emit()"
+      aria-label="Open navigation"
+    >
+      <span class="material-symbols-outlined">menu</span>
+    </button>
+    <span class="font-label-caps text-label-caps text-tertiary font-bold flex items-center gap-unit shrink-0">
+      <span class="w-2 h-2 rounded-full bg-tertiary animate-pulse"></span>
+      System Active
+    </span>
+    <span
+      class="hidden sm:flex font-label-caps text-label-caps text-on-surface-variant items-center gap-unit shrink-0"
+    >
+      <span class="material-symbols-outlined text-[14px]">auto_awesome</span>
+      AI Active
+    </span>
+  </div>
+  <div class="flex items-center gap-stack-lg flex-1 justify-end min-w-0">
+    @if (loading()) {
+      <span
+        class="hidden md:inline font-label-caps text-[10px] text-primary uppercase tracking-widest animate-pulse"
+        >Syncing</span
+      >
+    }
+    <div class="relative w-64 max-w-[40vw] hidden sm:block">
+      <input
+        class="w-full bg-surface-container-low border border-outline-variant rounded-full py-unit px-stack-md text-xs focus:ring-1 focus:ring-primary focus:border-primary outline-none"
+        type="text"
+        [placeholder]="searchPlaceholder()"
+      />
+      <span
+        class="material-symbols-outlined absolute right-3 top-1/2 -translate-y-1/2 text-on-surface-variant text-sm pointer-events-none"
+        >search</span
+      >
+    </div>
+    <div class="flex items-center gap-stack-md shrink-0">
+      <button
+        type="button"
+        class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer bg-transparent border-0 p-0"
+      >
+        notifications
+      </button>
+      <button
+        type="button"
+        class="material-symbols-outlined text-on-surface-variant hover:text-primary transition-all duration-300 cursor-pointer bg-transparent border-0 p-0"
+      >
+        settings
+      </button>
+    </div>
+    <img
+      alt="Chief Analyst"
+      class="w-8 h-8 rounded-full border border-primary/30 shrink-0 hidden sm:block"
+      src="https://lh3.googleusercontent.com/aida-public/AB6AXuASmg2ENuUdBgsp64zxgaQf777j5CYet0kbRj0KMts5BsCMwQ8sYB4NSNo6PMUFiAbCn9w1lNmsV7_MLYQsiHNY8mU2W3HhTUSjonWIokb9e30DF41jUeAim5-pHu9JL-aCr6HiQrXZKFJSB53HrsNLdzZb9ksKIN_kULv-ZXQMzxiiplQB_HYI-JQReiPuBKtWyQwyufa77e7P8BZ78SdHbrmCdV34Yb9Y-8ojqyMu7m0wYJZj20YiVDSqlGkj-_QM2dtGPPouGweX"
+    />
+  </div>
+</header>

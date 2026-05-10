@@ -8,6 +8,15 @@ Accept: application/json
 GET {{FuelGuardApi_HostAddress}}/api/risk-scores
 Accept: application/json
 
+# Example element (Reason embeds AI narrative when HF is configured):
+# {
+#   "companyId": "22222222-2222-2222-2222-222222222222",
+#   "companyName": "Lakeside Gas & Go",
+#   "score": 87,
+#   "level": "High",
+#   "reason": "Summary: ...\nRecommended actions:\n- Cross-check ATG vs dip...\nConfidence: HIGH"
+# }
+
 ###
 
 GET {{FuelGuardApi_HostAddress}}/api/anomalies

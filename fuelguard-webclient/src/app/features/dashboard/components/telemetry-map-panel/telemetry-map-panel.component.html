@@ -1,0 +1,54 @@
+<div class="glass-panel glow-border rounded-xl overflow-hidden relative min-h-[400px]">
+  <img
+    class="w-full h-full object-cover grayscale brightness-50 opacity-70 min-h-[400px]"
+    alt="Global Pipeline Grid — surveillance overlay"
+    src="https://lh3.googleusercontent.com/aida-public/AB6AXuDywsCQHfdT69PuK5-ehqrh_OpoWna3PULxjTuxfwz_EaKfsI_gIfa07-sZ3JYxzyPc38p-tdV0QlDW97nZCGTxNiVIWfDiol3LqnTyJjFjLHrVplFDSC_0EDT-U29ZWtwKkEQCX8xxOmnSOryPQ8p7Lk147Bbn8Sof1W9OoXBhe_l-swgme9topbEr5IYAcS626DZcvb7EasGUA1FJfKMHD65hiwJrr1898OvJ4rEE5RqY42slT_rmOEO1zZvokCFdSmLtmt_Q0UOe"
+  />
+  <div class="absolute inset-0 bg-gradient-to-t from-background via-transparent to-transparent"></div>
+  <div class="absolute top-4 left-4 flex gap-2">
+    <div
+      class="bg-surface/80 backdrop-blur-md px-3 py-1.5 rounded-full border border-outline-variant/30 flex items-center gap-2"
+    >
+      <span
+        class="w-2 h-2 rounded-full bg-error"
+        [ngClass]="{ 'animate-ping': alertActive() }"
+      ></span>
+      <span class="font-label-caps text-[10px] uppercase text-on-surface">{{ telemetry().mapBadgeText }}</span>
+    </div>
+  </div>
+  <div
+    class="absolute bottom-4 left-4 right-4 bg-surface/90 backdrop-blur-md border border-outline-variant/30 p-stack-md rounded-lg"
+  >
+    <div class="flex justify-between items-center mb-stack-sm">
+      <span class="font-headline-md text-[16px] font-bold">{{ telemetry().panelTitle }}</span>
+      <span
+        class="font-label-caps text-[10px] font-bold"
+        [ngClass]="telemetry().statusLabel === 'CRITICAL DEVIATION' ? 'text-error' : 'text-tertiary'"
+        >{{ telemetry().statusLabel }}</span
+      >
+    </div>
+    <div class="grid grid-cols-3 gap-4">
+      <div>
+        <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Flow Rate</p>
+        <p class="font-data-tabular text-[16px] text-on-surface">
+          {{ telemetry().flowRateLitersPerSecond | number : '1.1-1' }} L/s
+        </p>
+      </div>
+      <div>
+        <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Pressure</p>
+        <p
+          class="font-data-tabular text-[16px]"
+          [ngClass]="telemetry().statusLabel === 'CRITICAL DEVIATION' ? 'text-error' : 'text-on-surface'"
+        >
+          {{ telemetry().pressureBar | number : '1.1-1' }} Bar
+        </p>
+      </div>
+      <div>
+        <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Temp</p>
+        <p class="font-data-tabular text-[16px] text-on-surface">
+          {{ telemetry().temperatureCelsius | number : '1.1-1' }} °C
+        </p>
+      </div>
+    </div>
+  </div>
+</div>

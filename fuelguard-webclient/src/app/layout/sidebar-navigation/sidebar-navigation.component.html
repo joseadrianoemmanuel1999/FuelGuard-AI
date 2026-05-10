@@ -1,0 +1,103 @@
+@if (mobileOpen()) {
+  <button
+    type="button"
+    class="fixed inset-0 z-40 bg-black/60 backdrop-blur-sm lg:hidden"
+    (click)="closeMobile.emit()"
+    aria-label="Close navigation"
+  ></button>
+}
+
+<aside
+  class="h-screen w-64 flex flex-col fixed left-0 top-0 bg-surface-dim shadow-md z-50 transition-transform duration-300 ease-out -translate-x-full data-[open=true]:translate-x-0 lg:translate-x-0"
+  [attr.data-open]="mobileOpen() ? true : null"
+>
+  <div class="h-full flex flex-col py-margin-desktop">
+    <div class="px-margin-mobile mb-stack-lg">
+      <h1 class="font-headline-md text-headline-md font-bold text-primary">FuelGuard AI</h1>
+      <p class="font-label-caps text-label-caps text-on-surface-variant opacity-60">
+        Vigilance Protocol v4.2
+      </p>
+    </div>
+    <nav class="flex-1 space-y-unit px-stack-sm overflow-y-auto">
+      <a
+        routerLink="/command-center"
+        routerLinkActive="bg-secondary-container text-on-secondary-container rounded-lg shadow-[0_0_15px_rgba(192,193,255,0.2)]"
+        [routerLinkActiveOptions]="{ exact: true }"
+        class="flex items-center gap-stack-md px-margin-mobile py-stack-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200"
+        (click)="closeMobile.emit()"
+      >
+        <span class="material-symbols-outlined">dashboard</span>
+        <span class="font-body-md">Command Center</span>
+      </a>
+      <a
+        routerLink="/live-feed"
+        routerLinkActive="bg-secondary-container text-on-secondary-container rounded-lg shadow-[0_0_15px_rgba(192,193,255,0.2)]"
+        class="flex items-center gap-stack-md px-margin-mobile py-stack-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200"
+        (click)="closeMobile.emit()"
+      >
+        <span class="material-symbols-outlined">videocam</span>
+        <span class="font-body-md">Live Feed</span>
+      </a>
+      <a
+        routerLink="/investigations"
+        routerLinkActive="bg-secondary-container text-on-secondary-container rounded-lg shadow-[0_0_15px_rgba(192,193,255,0.2)]"
+        class="flex items-center gap-stack-md px-margin-mobile py-stack-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200"
+        (click)="closeMobile.emit()"
+      >
+        <span class="material-symbols-outlined">troubleshoot</span>
+        <span class="font-body-md">Investigations</span>
+      </a>
+      <a
+        routerLink="/log-terminal"
+        routerLinkActive="bg-secondary-container text-on-secondary-container rounded-lg shadow-[0_0_15px_rgba(192,193,255,0.2)]"
+        class="flex items-center gap-stack-md px-margin-mobile py-stack-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200"
+        (click)="closeMobile.emit()"
+      >
+        <span class="material-symbols-outlined">terminal</span>
+        <span class="font-body-md">Log Terminal</span>
+      </a>
+      <a
+        routerLink="/risk-reports"
+        routerLinkActive="bg-secondary-container text-on-secondary-container rounded-lg shadow-[0_0_15px_rgba(192,193,255,0.2)]"
+        class="flex items-center gap-stack-md px-margin-mobile py-stack-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200"
+        (click)="closeMobile.emit()"
+      >
+        <span class="material-symbols-outlined">monitoring</span>
+        <span class="font-body-md">Risk Reports</span>
+      </a>
+      <a
+        routerLink="/team-access"
+        routerLinkActive="bg-secondary-container text-on-secondary-container rounded-lg shadow-[0_0_15px_rgba(192,193,255,0.2)]"
+        class="flex items-center gap-stack-md px-margin-mobile py-stack-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200"
+        (click)="closeMobile.emit()"
+      >
+        <span class="material-symbols-outlined">group</span>
+        <span class="font-body-md">Team Access</span>
+      </a>
+    </nav>
+    <div class="px-margin-mobile mt-auto">
+      <button
+        type="button"
+        class="w-full py-stack-sm bg-primary text-on-primary font-bold rounded active:scale-95 transition-transform"
+        (click)="runSimulation(); closeMobile.emit()"
+      >
+        Simulate Attack
+      </button>
+      <div class="mt-stack-lg flex items-center gap-stack-sm">
+        <div
+          class="w-8 h-8 rounded-full bg-surface-container-high border border-outline-variant flex items-center justify-center overflow-hidden"
+        >
+          <img
+            alt="Analyst Profile"
+            class="w-full h-full object-cover"
+            src="https://lh3.googleusercontent.com/aida-public/AB6AXuDoPe3oT86uAbDq79J6LeVCx38jNdzKhqZBJK1sA-1Hw_H3HfTp1n4R5Nd2OpQzqDD8oCLSS7pT5ZsIperD4mKxKetH-Ka894OgSUgpJKySwUefzUoseoQ3TcqkD1LnBRPpp13vXELTgGt5DysMcxTTZB7hpWmuDXK8V5e3nff-3Wa7oHqYpunpr3_SK1CqhvpQoTPLv-aUhBHc18UhKtr6wEcxsnUrr6I_Mc4GZBJljyla9QLX-YLtRCsreiS52DcxZkrGZVhd7Vri"
+          />
+        </div>
+        <div class="text-xs">
+          <p class="font-bold">Analyst ID: 902</p>
+          <p class="text-on-surface-variant">Auth Level 4</p>
+        </div>
+      </div>
+    </div>
+  </div>
+</aside>
