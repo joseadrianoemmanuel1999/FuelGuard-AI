@@ -1,6 +1,37 @@
 import { ChangeDetectionStrategy, Component, computed, input } from '@angular/core';
 import type { LiveFeedEventDto } from '../../../../core/models/portal.models';
 
+type ResolvedEventAccent = 'error' | 'primary' | 'warning' | 'default';
+
+const EVENT_CARD_BORDER_BY_ACCENT: Readonly<Record<ResolvedEventAccent, string>> = {
+  error: 'border-error/40 bg-error-container/10',
+  primary: 'border-primary/40 bg-primary/5',
+  warning: 'border-[#FFAB40]/40 bg-[#FFAB40]/5',
+  default: 'border-outline-variant/30 bg-surface-container-low/50',
+};
+
+const CATEGORY_BADGE_TONE_BY_ACCENT: Readonly<Record<ResolvedEventAccent, string>> = {
+  error: 'bg-error/20 text-error',
+  primary: 'bg-primary/20 text-primary',
+  warning: 'bg-[#FFAB40]/20 text-[#FFAB40]',
+  default: 'bg-surface-container-highest text-on-surface-variant',
+};
+
+const CATEGORY_BADGE_LAYOUT = 'px-2 py-0.5 rounded text-[10px] font-bold tracking-wider';
+
+function resolveEventAccent(rawAccent: LiveFeedEventDto['accent']): ResolvedEventAccent {
+  switch (rawAccent) {
+    case 'error':
+      return 'error';
+    case 'primary':
+      return 'primary';
+    case 'warning':
+      return 'warning';
+    default:
+      return 'default';
+  }
+}
+
 @Component({
   selector: 'app-event-card',
   standalone: true,
@@ -8,21 +39,15 @@ import type { LiveFeedEventDto } from '../../../../core/models/portal.models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class EventCardComponent {
-  readonly event = input.required<LiveFeedEventDto>();
+  readonly liveFeedEvent = input.required<LiveFeedEventDto>();
 
-  protected readonly borderClass = computed(() => {
-    const a = this.event().accent;
-    if (a === 'error') return 'border-error/40 bg-error-container/10';
-    if (a === 'primary') return 'border-primary/40 bg-primary/5';
-    if (a === 'warning') return 'border-[#FFAB40]/40 bg-[#FFAB40]/5';
-    return 'border-outline-variant/30 bg-surface-container-low/50';
+  protected readonly eventCardBorderClass = computed<string>(() => {
+    const accent = resolveEventAccent(this.liveFeedEvent().accent);
+    return EVENT_CARD_BORDER_BY_ACCENT[accent];
   });
 
-  protected readonly tagClass = computed(() => {
-    const a = this.event().accent;
-    if (a === 'error') return 'bg-error/20 text-error';
-    if (a === 'primary') return 'bg-primary/20 text-primary';
-    if (a === 'warning') return 'bg-[#FFAB40]/20 text-[#FFAB40]';
-    return 'bg-surface-container-highest text-on-surface-variant';
+  protected readonly categoryBadgeClass = computed<string>(() => {
+    const accent = resolveEventAccent(this.liveFeedEvent().accent);
+    return `${CATEGORY_BADGE_TONE_BY_ACCENT[accent]} ${CATEGORY_BADGE_LAYOUT}`;
   });
 }

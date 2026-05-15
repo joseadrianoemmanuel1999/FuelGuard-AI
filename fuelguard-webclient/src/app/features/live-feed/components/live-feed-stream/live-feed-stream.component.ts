@@ -10,5 +10,5 @@ import { EventCardComponent } from '../event-card/event-card.component';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class LiveFeedStreamComponent {
-  readonly events = input<LiveFeedEventDto[]>([]);
+  readonly liveFeedEvents = input<LiveFeedEventDto[]>([]);
 }

@@ -27,8 +27,8 @@
         [revision]="state.investigationRevision()"
       />
       <app-telemetry-map-panel
-        [telemetry]="state.telemetry()"
-        [alertActive]="state.alertStateActive()"
+        [currentTelemetry]="state.telemetry()"
+        [isAlertActive]="state.alertStateActive()"
       />
     </div>
     <app-system-logs-terminal [logs]="state.logs()" />

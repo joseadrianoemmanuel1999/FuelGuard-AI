@@ -1,5 +1,4 @@
 import { ApplicationConfig, provideZoneChangeDetection } from '@angular/core';
-import { provideAnimations } from '@angular/platform-browser/animations';
 import { provideRouter } from '@angular/router';
 import { provideHttpClient, withInterceptors } from '@angular/common/http';
 import { routes } from './app.routes';
@@ -16,7 +15,6 @@ export const appConfig: ApplicationConfig = {
     provideHttpClient(
       withInterceptors([correlationIdInterceptor, loggingInterceptor, errorInterceptor]),
     ),
-    provideAnimations(),
     { provide: API_BASE_URL, useValue: environment.apiBaseUrl },
   ],
 };

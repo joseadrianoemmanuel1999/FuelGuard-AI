@@ -1,6 +1,8 @@
 import { ChangeDetectionStrategy, Component, computed, inject, input } from '@angular/core';
-import { DomSanitizer } from '@angular/platform-browser';
-import type { Investigation } from '../../models/investigation.models';
+import { DomSanitizer, SafeHtml } from '@angular/platform-browser';
+import type { Investigation, TimelineEvent } from '../../models/investigation.models';
+
+const BASELINE_FLOW_STRIP_BAR_COUNT = 3;
 
 @Component({
   selector: 'app-investigation-detail-panel',
@@ -9,35 +11,49 @@ import type { Investigation } from '../../models/investigation.models';
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class InvestigationDetailPanelComponent {
-  private readonly sanitizer = inject(DomSanitizer);
+  private readonly domSanitizer = inject(DomSanitizer);
 
-  readonly investigation = input.required<Investigation>();
+  readonly selectedInvestigation = input.required<Investigation>();
 
-  protected readonly safeNarrative = computed(() =>
-    this.sanitizer.bypassSecurityTrustHtml(this.investigation().detail.narrativeHtml),
+  protected readonly sanitizedNarrativeHtml = computed<SafeHtml>(() =>
+    this.domSanitizer.bypassSecurityTrustHtml(this.selectedInvestigation().detail.narrativeHtml),
   );
 
-  protected dotClass(tone: string): string {
-    if (tone === 'error') return 'bg-error';
-    if (tone === 'primary') return 'bg-primary';
-    return 'bg-outline-variant';
+  protected cssClassForTimelineDotTone(tone: TimelineEvent['dotTone']): string {
+    switch (tone) {
+      case 'error':
+        return 'bg-error';
+      case 'primary':
+        return 'bg-primary';
+      case 'neutral':
+        return 'bg-outline-variant';
+      default: {
+        const exhaustiveCheck: never = tone;
+        return exhaustiveCheck;
+      }
+    }
   }
 
-  protected deployDrone(): void {
-    console.info('[FuelGuard] Deploy Surveillance Drone (mock)', this.investigation().id);
+  protected onDeploySurveillanceDrone(): void {
+    console.info('[FuelGuard] Deploy Surveillance Drone (mock)', this.selectedInvestigation().id);
   }
 
-  protected shutValve(): void {
-    console.info('[FuelGuard] Emergency shut valve (mock)', this.investigation().detail.telemetryNodeLabel);
+  protected onEmergencyValveShut(): void {
+    console.info(
+      '[FuelGuard] Emergency shut valve (mock)',
+      this.selectedInvestigation().detail.telemetryNodeLabel,
+    );
   }
 
-  protected escalateCase(): void {
-    console.info('[FuelGuard] Escalate to Federal Oversight (mock)', this.investigation().id);
+  protected onEscalateToFederalOversight(): void {
+    console.info('[FuelGuard] Escalate to Federal Oversight (mock)', this.selectedInvestigation().id);
   }
 
-  protected telemetryBarClass(i: number): string {
-    const base = 'flex-1 rounded-t border-t transition-all';
-    if (i < 3) return `${base} bg-tertiary/20 border-transparent`;
-    return `${base} bg-error/40 border-error animate-pulse`;
+  protected cssClassForFlowStripBar(barIndex: number): string {
+    const baseShell = 'flex-1 rounded-t border-t transition-all';
+    if (barIndex < BASELINE_FLOW_STRIP_BAR_COUNT) {
+      return `${baseShell} bg-tertiary/20 border-transparent`;
+    }
+    return `${baseShell} bg-error/40 border-error animate-pulse`;
   }
 }

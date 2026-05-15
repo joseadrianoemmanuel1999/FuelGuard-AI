@@ -8,7 +8,6 @@ import { ChangeDetectionStrategy, Component, computed, input } from '@angular/co
 })
 export class ConfidenceBarComponent {
   readonly percent = input(0);
-  /** Tailwind width class for fill e.g. bg-primary */
   readonly fillClass = input('bg-primary');
   readonly labelClass = input('text-primary');
 

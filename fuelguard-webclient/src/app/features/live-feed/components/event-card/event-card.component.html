@@ -1,21 +1,19 @@
 <div
   class="rounded-xl border p-stack-md flex flex-col gap-stack-sm transition-shadow duration-300 hover:shadow-[0_0_24px_rgba(192,193,255,0.08)]"
-  [class]="borderClass()"
+  [class]="eventCardBorderClass()"
 >
   <div class="flex flex-wrap items-center gap-stack-sm font-data-tabular text-data-tabular">
-    <span class="text-on-surface-variant">{{ event().timestamp }}</span>
-    <span [class]="tagClass() + ' px-2 py-0.5 rounded text-[10px] font-bold tracking-wider'">{{
-      event().category
-    }}</span>
+    <span class="text-on-surface-variant">{{ liveFeedEvent().timestamp }}</span>
+    <span [class]="categoryBadgeClass()">{{ liveFeedEvent().category }}</span>
   </div>
-  <h3 class="font-headline-md text-body-lg font-bold text-on-surface">{{ event().title }}</h3>
-  <p class="font-body-md text-on-surface-variant">{{ event().body }}</p>
-  @if (event().tags.length) {
+  <h3 class="font-headline-md text-body-lg font-bold text-on-surface">{{ liveFeedEvent().title }}</h3>
+  <p class="font-body-md text-on-surface-variant">{{ liveFeedEvent().body }}</p>
+  @if (liveFeedEvent().tags.length) {
     <div class="flex flex-wrap gap-unit">
-      @for (t of event().tags; track t) {
+      @for (tagLabel of liveFeedEvent().tags; track $index) {
         <span
           class="text-[10px] font-label-caps px-2 py-0.5 rounded-full bg-surface-container-high border border-outline-variant/30 text-on-surface-variant"
-          >{{ t }}</span
+          >{{ tagLabel }}</span
         >
       }
     </div>

@@ -15,13 +15,13 @@
     </div>
   </div>
   <div
-    #scrollViewport
+    #logsScrollContainer
     class="flex-1 p-stack-md font-data-tabular text-data-tabular bg-surface-container-lowest overflow-y-auto space-y-1"
   >
-    @for (log of logs(); track trackLog($index, log)) {
-      <p class="text-on-surface-variant" [@terminalLineEnter]>
+    @for (log of logs(); track trackByLogEntry($index, log)) {
+      <p class="text-on-surface-variant" animate.enter="fg-terminal-line-enter">
         <span class="text-primary/70">[{{ log.timestamp }}]</span>
-        <span [ngClass]="stageClass(log.stage)">&nbsp;[{{ log.stage }}]</span>
+        <span [ngClass]="logStageNgClassMap(log.stage)">&nbsp;[{{ log.stage }}]</span>
         {{ log.message }}
       </p>
     }

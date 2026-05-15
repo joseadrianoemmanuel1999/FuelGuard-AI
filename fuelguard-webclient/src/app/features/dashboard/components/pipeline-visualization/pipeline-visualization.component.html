@@ -6,7 +6,6 @@
     <div
       class="absolute top-1/2 left-0 w-full h-[1px] bg-outline-variant/30 -translate-y-1/2 hidden lg:block"
     ></div>
-    <!-- Ingestion -->
     <div class="relative z-10 flex flex-col items-center gap-3">
       <div
         class="w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-500"
@@ -25,7 +24,6 @@
       [ngClass]="activeStage() >= 1 ? 'text-tertiary' : 'text-outline-variant'"
       >chevron_right</span
     >
-    <!-- Aggregation -->
     <div class="relative z-10 flex flex-col items-center gap-3">
       <div
         class="w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-500"
@@ -44,7 +42,6 @@
       [ngClass]="activeStage() >= 2 ? 'text-primary' : 'text-outline-variant'"
       >chevron_right</span
     >
-    <!-- Anomaly -->
     <div class="relative z-10 flex flex-col items-center gap-3">
       <div
         class="flex items-center justify-center transition-all duration-500 rounded-xl"
@@ -72,7 +69,6 @@
       [ngClass]="activeStage() >= 3 ? 'text-error' : 'text-outline-variant'"
       >chevron_right</span
     >
-    <!-- Risk -->
     <div class="relative z-10 flex flex-col items-center gap-3">
       <div
         class="flex items-center justify-center transition-all duration-500 rounded-xl"
@@ -100,7 +96,6 @@
       [ngClass]="activeStage() >= 4 ? 'text-tertiary' : 'text-outline-variant'"
       >chevron_right</span
     >
-    <!-- Alert -->
     <div class="relative z-10 flex flex-col items-center gap-3">
       <div
         class="w-12 h-12 rounded-lg flex items-center justify-center transition-all duration-500"

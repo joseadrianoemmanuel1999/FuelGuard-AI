@@ -1,5 +1,5 @@
 <div class="flex flex-col gap-stack-md">
-  @for (ev of events(); track ev.timestamp + ev.title) {
-    <app-event-card [event]="ev" />
+  @for (feedEvent of liveFeedEvents(); track feedEvent.timestamp + feedEvent.title) {
+    <app-event-card [liveFeedEvent]="feedEvent" />
   }
 </div>

@@ -14,12 +14,12 @@
       (select)="onSelect($event)"
     />
     <div class="mt-margin-desktop grid grid-cols-12 gap-gutter">
-      <app-intelligence-chart [barHeightsPercent]="state.intelligenceBarPercents()" />
+      <app-intelligence-chart [histogramBarHeightPercents]="state.histogramBarHeightPercents()" />
       <app-satellite-card [description]="state.selectedInvestigation()?.satelliteNarrative ?? ''" />
     </div>
   </section>
   @if (state.selectedInvestigation(); as inv) {
-    <app-investigation-detail-panel [investigation]="inv" />
+    <app-investigation-detail-panel [selectedInvestigation]="inv" />
   }
 </div>
 <div class="fixed bottom-margin-desktop right-[400px] z-50">

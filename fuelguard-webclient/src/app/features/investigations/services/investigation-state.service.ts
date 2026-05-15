@@ -8,105 +8,114 @@ import type {
 } from '../../../core/models/portal.models';
 import type { Investigation, InvestigationDetail, TimelineEvent } from '../models/investigation.models';
 
-function mapRiskTier(tone: string): Investigation['riskTier'] {
-  if (tone === 'critical') return 'critical';
-  if (tone === 'high') return 'high';
-  if (tone === 'low') return 'low';
+function mapRiskTier(riskToneRaw: string): Investigation['riskTier'] {
+  if (riskToneRaw === 'critical') return 'critical';
+  if (riskToneRaw === 'high') return 'high';
+  if (riskToneRaw === 'low') return 'low';
   return 'medium';
 }
 
-function mapTimeline(dto: InvestigationDetailDto): TimelineEvent[] {
-  return dto.timeline.map((t) => {
-    let dot: TimelineEvent['dotTone'] = 'neutral';
-    if (t.dotTone === 'error') dot = 'error';
-    else if (t.dotTone === 'primary') dot = 'primary';
-    return { timeUtc: t.timeUtc, title: t.title, dotTone: dot };
+function mapTimelineEventsFromDetail(detailDto: InvestigationDetailDto): TimelineEvent[] {
+  return detailDto.timeline.map((timelineEntryDto) => {
+    let resolvedDotTone: TimelineEvent['dotTone'] = 'neutral';
+    if (timelineEntryDto.dotTone === 'error') resolvedDotTone = 'error';
+    else if (timelineEntryDto.dotTone === 'primary') resolvedDotTone = 'primary';
+    return {
+      timeUtc: timelineEntryDto.timeUtc,
+      title: timelineEntryDto.title,
+      dotTone: resolvedDotTone,
+    };
   });
 }
 
-function detailFromDto(d: InvestigationDetailDto): InvestigationDetail {
+function investigationDetailFromApiDto(detailDto: InvestigationDetailDto): InvestigationDetail {
   return {
-    caseId: d.caseId,
-    narrativeHtml: d.narrativeHtml,
-    timeline: mapTimeline(d),
-    normalFlowLitersPerSecond: d.normalFlowLitersPerSecond,
-    actualFlowLitersPerSecond: d.actualFlowLitersPerSecond,
+    caseId: detailDto.caseId,
+    narrativeHtml: detailDto.narrativeHtml,
+    timeline: mapTimelineEventsFromDetail(detailDto),
+    normalFlowLitersPerSecond: detailDto.normalFlowLitersPerSecond,
+    actualFlowLitersPerSecond: detailDto.actualFlowLitersPerSecond,
     telemetryNodeLabel: 'Node 42',
-    telemetryBarsPercent: [80, 75, 80, 50, 45, 50],
+    telemetryBarsPercent: [80, 75, 80, 50, 45, 50] as const,
   };
 }
 
-function syntheticDetail(row: InvestigationBoardRowDto): InvestigationDetail {
-  const node = 40 + (row.confidencePercent % 12);
+function syntheticInvestigationDetail(boardRow: InvestigationBoardRowDto): InvestigationDetail {
+  const syntheticTelemetryNodeNumber = 40 + (boardRow.confidencePercent % 12);
   return {
-    caseId: row.investigationId,
-    narrativeHtml: `<p class="text-xs leading-relaxed text-on-surface/90">Operational summary for <span class="text-primary font-data-tabular">${row.companyName}</span>. Correlation engine is assembling timeline artifacts for <span class="text-primary font-data-tabular">Node ${node}</span>.</p>`,
+    caseId: boardRow.investigationId,
+    narrativeHtml: `<p class="text-xs leading-relaxed text-on-surface/90">Operational summary for <span class="text-primary font-data-tabular">${boardRow.companyName}</span>. Correlation engine is assembling timeline artifacts for <span class="text-primary font-data-tabular">Node ${syntheticTelemetryNodeNumber}</span>.</p>`,
     timeline: [],
     normalFlowLitersPerSecond: 420,
     actualFlowLitersPerSecond: Math.max(
       200,
-      Math.round(420 - row.confidencePercent * 0.45),
+      Math.round(420 - boardRow.confidencePercent * 0.45),
     ),
-    telemetryNodeLabel: `Node ${node}`,
-    telemetryBarsPercent: [70, 72, 68, 55, 52, 58],
+    telemetryNodeLabel: `Node ${syntheticTelemetryNodeNumber}`,
+    telemetryBarsPercent: [70, 72, 68, 55, 52, 58] as const,
   };
 }
 
-function satelliteBlurb(row: InvestigationBoardRowDto): string {
-  if (row.investigationId === 'INV-4029-A') {
+function buildSatelliteNarrativeForRow(boardRow: InvestigationBoardRowDto): string {
+  if (boardRow.investigationId === 'INV-4029-A') {
     return 'Live spectral analysis of PetroFlow Tanker 0928 detected in unauthorized zone.';
   }
-  return `Live spectral analysis — ${row.companyName} corridor; multi-spectral feed correlating AIS and berth telemetry.`;
+  return `Live spectral analysis — ${boardRow.companyName} corridor; multi-spectral feed correlating AIS and berth telemetry.`;
 }
 
-function investigationFromRow(
-  row: InvestigationBoardRowDto,
-  rowIndex: number,
-  board: { selectedDetail: InvestigationDetailDto },
+function investigationFromBoardRow(
+  boardRow: InvestigationBoardRowDto,
+  boardRowIndex: number,
+  investigationsBoard: InvestigationsBoardDto,
 ): Investigation {
-  const detail =
-    board.selectedDetail.caseId === row.investigationId
-      ? detailFromDto(board.selectedDetail)
-      : syntheticDetail(row);
+  const investigationDetail =
+    investigationsBoard.selectedDetail.caseId === boardRow.investigationId
+      ? investigationDetailFromApiDto(investigationsBoard.selectedDetail)
+      : syntheticInvestigationDetail(boardRow);
   return {
-    id: row.investigationId,
-    company: row.companyName,
-    companySubtitle: rowIndex === 0 ? `ID: ${row.investigationId}` : null,
-    riskLevel: row.riskLabel,
-    riskTier: mapRiskTier(row.riskTone),
-    confidence: row.confidencePercent,
-    region: row.region,
-    status: row.status,
-    statusActiveDot: row.statusActiveDot,
-    lastActivity: row.lastActivity,
-    detail,
-    satelliteNarrative: satelliteBlurb(row),
+    id: boardRow.investigationId,
+    company: boardRow.companyName,
+    companySubtitle: boardRowIndex === 0 ? `ID: ${boardRow.investigationId}` : null,
+    riskLevel: boardRow.riskLabel,
+    riskTier: mapRiskTier(boardRow.riskTone),
+    confidence: boardRow.confidencePercent,
+    region: boardRow.region,
+    status: boardRow.status,
+    statusActiveDot: boardRow.statusActiveDot,
+    lastActivity: boardRow.lastActivity,
+    detail: investigationDetail,
+    satelliteNarrative: buildSatelliteNarrativeForRow(boardRow),
   };
 }
 
 @Injectable({ providedIn: 'root' })
 export class InvestigationStateService {
-  private readonly api = inject(FuelGuardApiService);
+  private readonly fuelGuardApi = inject(FuelGuardApiService);
 
-  private readonly board = signal<InvestigationsBoardDto | null>(null);
+  private readonly investigationsBoard = signal<InvestigationsBoardDto | null>(null);
 
   readonly investigations = signal<Investigation[]>([]);
   readonly selectedInvestigation = signal<Investigation | null>(null);
   readonly loading = signal(false);
 
-  /** Histogram column heights (percent of track), matching reference layout. */
-  readonly intelligenceBarPercents = signal<readonly number[]>([40, 55, 70, 95, 30, 45, 85, 100]);
+  readonly histogramBarHeightPercents = signal<readonly number[]>([
+    40, 55, 70, 95, 30, 45, 85, 100,
+  ] as const);
 
   async loadInvestigations(): Promise<void> {
     this.loading.set(true);
     try {
-      const dto = await firstValueFrom(this.api.getInvestigations());
-      this.board.set(dto);
-      this.investigations.set(dto.rows.map((r, i) => investigationFromRow(r, i, dto)));
-      this.selectInvestigation(dto.selectedDetail.caseId);
-    } catch (err) {
-      console.error('[Investigations] load failed', err);
-      this.board.set(null);
+      const investigationsBoardDto = await firstValueFrom(this.fuelGuardApi.getInvestigations());
+      this.investigationsBoard.set(investigationsBoardDto);
+      this.investigations.set(
+        investigationsBoardDto.rows.map((boardRow, boardRowIndex) =>
+          investigationFromBoardRow(boardRow, boardRowIndex, investigationsBoardDto),
+        ),
+      );
+      this.selectInvestigation(investigationsBoardDto.selectedDetail.caseId);
+    } catch (error) {
+      console.error('[Investigations] load failed', error);
+      this.investigationsBoard.set(null);
       this.investigations.set([]);
       this.selectedInvestigation.set(null);
     } finally {
@@ -114,27 +123,31 @@ export class InvestigationStateService {
     }
   }
 
-  selectInvestigation(id: string): void {
-    const dto = this.board();
-    if (!dto) return;
-    const row = dto.rows.find((r) => r.investigationId === id);
-    if (!row) return;
-    const index = dto.rows.indexOf(row);
-    const detail =
-      dto.selectedDetail.caseId === id ? detailFromDto(dto.selectedDetail) : syntheticDetail(row);
+  selectInvestigation(investigationId: string): void {
+    const investigationsBoardDto = this.investigationsBoard();
+    if (!investigationsBoardDto) return;
+    const matchingBoardRow = investigationsBoardDto.rows.find(
+      (boardRow) => boardRow.investigationId === investigationId,
+    );
+    if (!matchingBoardRow) return;
+    const boardRowIndex = investigationsBoardDto.rows.indexOf(matchingBoardRow);
+    const resolvedInvestigationDetail =
+      investigationsBoardDto.selectedDetail.caseId === investigationId
+        ? investigationDetailFromApiDto(investigationsBoardDto.selectedDetail)
+        : syntheticInvestigationDetail(matchingBoardRow);
     this.selectedInvestigation.set({
-      id: row.investigationId,
-      company: row.companyName,
-      companySubtitle: index === 0 ? `ID: ${row.investigationId}` : null,
-      riskLevel: row.riskLabel,
-      riskTier: mapRiskTier(row.riskTone),
-      confidence: row.confidencePercent,
-      region: row.region,
-      status: row.status,
-      statusActiveDot: row.statusActiveDot,
-      lastActivity: row.lastActivity,
-      detail,
-      satelliteNarrative: satelliteBlurb(row),
+      id: matchingBoardRow.investigationId,
+      company: matchingBoardRow.companyName,
+      companySubtitle: boardRowIndex === 0 ? `ID: ${matchingBoardRow.investigationId}` : null,
+      riskLevel: matchingBoardRow.riskLabel,
+      riskTier: mapRiskTier(matchingBoardRow.riskTone),
+      confidence: matchingBoardRow.confidencePercent,
+      region: matchingBoardRow.region,
+      status: matchingBoardRow.status,
+      statusActiveDot: matchingBoardRow.statusActiveDot,
+      lastActivity: matchingBoardRow.lastActivity,
+      detail: resolvedInvestigationDetail,
+      satelliteNarrative: buildSatelliteNarrativeForRow(matchingBoardRow),
     });
   }
 }

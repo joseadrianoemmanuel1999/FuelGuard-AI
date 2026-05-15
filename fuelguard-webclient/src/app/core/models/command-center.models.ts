@@ -53,3 +53,6 @@ export interface CommandCenterSimulationResultDto {
   activePipelineStageIndex: number;
   alertStateActive: boolean;
 }
+
+export const PIPELINE_STAGES = [0, 1, 2, 3, 4] as const;
+export type PipelineStage = (typeof PIPELINE_STAGES)[number];

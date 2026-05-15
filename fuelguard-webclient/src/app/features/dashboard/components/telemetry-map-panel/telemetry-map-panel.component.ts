@@ -14,6 +14,6 @@ import type { TelemetryDto } from '../../../../core/models/command-center.models
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class TelemetryMapPanelComponent {
-  readonly telemetry = input.required<TelemetryDto>();
-  readonly alertActive = input(true);
+  readonly currentTelemetry = input.required<TelemetryDto>();
+  readonly isAlertActive = input<boolean>(true);
 }

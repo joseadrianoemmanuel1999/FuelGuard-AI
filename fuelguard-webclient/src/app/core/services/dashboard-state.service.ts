@@ -1,12 +1,14 @@
 import { computed, inject, Injectable, signal } from '@angular/core';
 import { firstValueFrom } from 'rxjs';
 import { FuelGuardApiService } from './fuel-guard-api.service';
-import type {
-  AiInvestigationDto,
-  AlertDto,
-  PipelineLogDto,
-  RiskAssessmentDto,
-  TelemetryDto,
+import {
+  PIPELINE_STAGES,
+  type AiInvestigationDto,
+  type AlertDto,
+  type PipelineLogDto,
+  type PipelineStage,
+  type RiskAssessmentDto,
+  type TelemetryDto,
 } from '../models/command-center.models';
 import type {
   ExecutiveRiskReportDto,
@@ -90,7 +92,7 @@ export class DashboardStateService {
     panelTitle: 'Node 42 Telemetry',
     mapBadgeText: 'ACTIVE ALERT: SECTOR 7-G',
   });
-  readonly activePipelineStage = signal(3);
+  readonly activePipelineStage = signal<PipelineStage>(PIPELINE_STAGES[3]);
   readonly alertStateActive = signal(true);
   readonly cpuLoadPercent = signal(42);
   readonly investigationRevision = signal(0);
@@ -196,7 +198,7 @@ export class DashboardStateService {
       this.investigations.set(investigations);
       this.investigationRevision.update((v) => v + 1);
       this.alertStateActive.set(true);
-      this.activePipelineStage.set(4);
+      this.activePipelineStage.set(PIPELINE_STAGES[PIPELINE_STAGES.length - 1]);
       this.cpuLoadPercent.set(Math.min(99, this.cpuLoadPercent() + 6));
 
       const injectEvent: LiveFeedEventDto = {
@@ -219,14 +221,9 @@ export class DashboardStateService {
     }
   }
 
-  /** @deprecated use simulateFuelSmugglingScenario */
-  async simulate(): Promise<void> {
-    return this.simulateFuelSmugglingScenario();
-  }
-
   async animatePipeline(): Promise<void> {
     const stepMs = 420;
-    for (let stage = 0; stage <= 4; stage++) {
+    for (const stage of PIPELINE_STAGES) {
       this.activePipelineStage.set(stage);
       await delay(stepMs);
     }

@@ -65,7 +65,6 @@ export class FuelGuardApiService {
     return this.http.get<InvestigationsBoardDto>(`${this.apiBase}/investigations`);
   }
 
-  /** Legacy command-center path (dashboard bulk refresh). */
   getCommandCenterInvestigations(): Observable<InvestigationsBoardDto> {
     return this.http.get<InvestigationsBoardDto>(`${this.apiBase}/command-center/investigations`);
   }

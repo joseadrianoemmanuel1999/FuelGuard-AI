@@ -2,7 +2,6 @@
 @tailwind components;
 @tailwind utilities;
 
-/* Custom element hosts default to inline; ensure the app fills the viewport. */
 app-root {
   display: block;
   min-height: 100%;
@@ -115,5 +114,65 @@ app-root {
   }
   50% {
     opacity: 0;
+  }
+}
+
+$fg-fade-in-duration: 480ms;
+$fg-fade-in-ease: cubic-bezier(0.22, 1, 0.36, 1);
+$fg-terminal-line-duration: 320ms;
+$fg-terminal-line-ease: cubic-bezier(0.33, 1, 0.68, 1);
+$fg-risk-pulse-duration: 520ms;
+$fg-risk-pulse-ease: ease-out;
+$fg-risk-glow-rgba: rgba(255, 180, 171, 0);
+$fg-risk-glow-mid: rgba(255, 180, 171, 0.28);
+$fg-risk-inset-line: rgba(255, 255, 255, 0.05);
+
+.fg-fade-in-summary-enter {
+  animation: fg-fade-in-summary-enter-kf $fg-fade-in-duration $fg-fade-in-ease forwards;
+}
+
+@keyframes fg-fade-in-summary-enter-kf {
+  from {
+    opacity: 0;
+    transform: translateY(8px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fg-terminal-line-enter {
+  animation: fg-terminal-line-enter-kf $fg-terminal-line-duration $fg-terminal-line-ease forwards;
+}
+
+@keyframes fg-terminal-line-enter-kf {
+  from {
+    opacity: 0;
+    transform: translateY(6px);
+  }
+
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+.fg-risk-card-pulse {
+  animation: fg-risk-card-pulse-kf $fg-risk-pulse-duration $fg-risk-pulse-ease forwards;
+}
+
+@keyframes fg-risk-card-pulse-kf {
+  0% {
+    box-shadow: 0 0 0 0 $fg-risk-glow-rgba;
+  }
+
+  45% {
+    box-shadow: 0 0 28px 3px $fg-risk-glow-mid;
+  }
+
+  100% {
+    box-shadow: inset 0 0 0 1px $fg-risk-inset-line;
   }
 }

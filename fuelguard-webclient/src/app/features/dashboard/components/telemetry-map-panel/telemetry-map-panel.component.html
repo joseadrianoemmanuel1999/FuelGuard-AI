@@ -11,42 +11,42 @@
     >
       <span
         class="w-2 h-2 rounded-full bg-error"
-        [ngClass]="{ 'animate-ping': alertActive() }"
+        [ngClass]="{ 'animate-ping': isAlertActive() }"
       ></span>
-      <span class="font-label-caps text-[10px] uppercase text-on-surface">{{ telemetry().mapBadgeText }}</span>
+      <span class="font-label-caps text-[10px] uppercase text-on-surface">{{ currentTelemetry().mapBadgeText }}</span>
     </div>
   </div>
   <div
     class="absolute bottom-4 left-4 right-4 bg-surface/90 backdrop-blur-md border border-outline-variant/30 p-stack-md rounded-lg"
   >
     <div class="flex justify-between items-center mb-stack-sm">
-      <span class="font-headline-md text-[16px] font-bold">{{ telemetry().panelTitle }}</span>
+      <span class="font-headline-md text-[16px] font-bold">{{ currentTelemetry().panelTitle }}</span>
       <span
         class="font-label-caps text-[10px] font-bold"
-        [ngClass]="telemetry().statusLabel === 'CRITICAL DEVIATION' ? 'text-error' : 'text-tertiary'"
-        >{{ telemetry().statusLabel }}</span
+        [ngClass]="currentTelemetry().statusLabel === 'CRITICAL DEVIATION' ? 'text-error' : 'text-tertiary'"
+        >{{ currentTelemetry().statusLabel }}</span
       >
     </div>
     <div class="grid grid-cols-3 gap-4">
       <div>
         <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Flow Rate</p>
         <p class="font-data-tabular text-[16px] text-on-surface">
-          {{ telemetry().flowRateLitersPerSecond | number : '1.1-1' }} L/s
+          {{ currentTelemetry().flowRateLitersPerSecond | number : '1.1-1' }} L/s
         </p>
       </div>
       <div>
         <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Pressure</p>
         <p
           class="font-data-tabular text-[16px]"
-          [ngClass]="telemetry().statusLabel === 'CRITICAL DEVIATION' ? 'text-error' : 'text-on-surface'"
+          [ngClass]="currentTelemetry().statusLabel === 'CRITICAL DEVIATION' ? 'text-error' : 'text-on-surface'"
         >
-          {{ telemetry().pressureBar | number : '1.1-1' }} Bar
+          {{ currentTelemetry().pressureBar | number : '1.1-1' }} Bar
         </p>
       </div>
       <div>
         <p class="font-label-caps text-[10px] text-on-surface-variant uppercase">Temp</p>
         <p class="font-data-tabular text-[16px] text-on-surface">
-          {{ telemetry().temperatureCelsius | number : '1.1-1' }} °C
+          {{ currentTelemetry().temperatureCelsius | number : '1.1-1' }} °C
         </p>
       </div>
     </div>

@@ -5,6 +5,11 @@ import {
   input,
 } from '@angular/core';
 
+import {
+  PIPELINE_STAGES,
+  type PipelineStage,
+} from '../../../../core/models/command-center.models';
+
 @Component({
   selector: 'app-pipeline-visualization',
   standalone: true,
@@ -13,8 +18,7 @@ import {
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class PipelineVisualizationComponent {
-  /** 0–4: Ingestion → Aggregation → Anomaly → Risk → Alert */
-  readonly activeStage = input(3);
-  readonly cpuLoadPercent = input(42);
-  readonly throughputWidthClass = input('w-3/4');
+  readonly activeStage = input<PipelineStage>(PIPELINE_STAGES[3]);
+  readonly cpuLoadPercent = input<number>(42);
+  readonly throughputWidthClass = input<string>('w-3/4');
 }

@@ -15,7 +15,6 @@ export class ShellTopNavbarComponent {
   readonly loading = input(false);
   readonly menuToggle = output<void>();
 
-  /** Resolved from deepest child route `data['searchPlaceholder']`. */
   protected readonly searchPlaceholder = toSignal(
     this.router.events.pipe(
       filter((e): e is NavigationEnd => e instanceof NavigationEnd),

@@ -4,8 +4,11 @@
     <span class="text-xs text-on-surface-variant">Real-time Node Saturation</span>
   </div>
   <div class="h-48 bg-surface-dim/50 rounded flex items-end justify-between p-stack-sm gap-unit">
-    @for (h of barHeightsPercent(); track $index) {
-      <div [class]="shellClass($index)" [style.height.%]="h"></div>
+    @for (heightPercent of histogramBarHeightPercents(); track $index) {
+      <div
+        [class]="shellClassForHistogramColumn($index)"
+        [style.height.%]="heightPercent"
+      ></div>
     }
   </div>
 </div>

@@ -1,52 +1,69 @@
 import {
+  afterNextRender,
   ChangeDetectionStrategy,
   Component,
   effect,
   ElementRef,
+  inject,
+  Injector,
   input,
   viewChild,
 } from '@angular/core';
 import { NgClass } from '@angular/common';
 import type { PipelineLogDto } from '../../../../core/models/command-center.models';
-import { terminalLineEnter } from '../../dashboard.animations';
+
+type LogStageTextClassName =
+  | 'text-tertiary'
+  | 'text-on-surface-variant'
+  | 'text-error'
+  | 'text-primary';
+
+type LogStageNgClassMap = Partial<Record<LogStageTextClassName, boolean>>;
 
 @Component({
   selector: 'app-system-logs-terminal',
   standalone: true,
   imports: [NgClass],
   templateUrl: './system-logs-terminal.component.html',
-  animations: [terminalLineEnter],
   changeDetection: ChangeDetectionStrategy.OnPush,
 })
 export class SystemLogsTerminalComponent {
   readonly logs = input.required<PipelineLogDto[]>();
 
-  private readonly viewport = viewChild<ElementRef<HTMLElement>>('scrollViewport');
+  private readonly injector = inject(Injector);
+  private readonly scrollContainerRef =
+    viewChild<ElementRef<HTMLElement>>('logsScrollContainer');
 
-  constructor() {
-    effect(() => {
-      this.logs();
-      queueMicrotask(() => this.scrollToBottom());
+  private readonly syncScrollAfterLogsChange = effect(() => {
+    this.logs();
+    afterNextRender(() => this.scrollLogContainerToBottom(), {
+      injector: this.injector,
     });
-  }
+  });
 
-  private scrollToBottom(): void {
-    const el = this.viewport()?.nativeElement;
-    if (!el) return;
-    el.scrollTo({ top: el.scrollHeight, behavior: 'smooth' });
-  }
-
-  trackLog(_index: number, log: PipelineLogDto): string {
+  trackByLogEntry(_index: number, log: PipelineLogDto): string {
     return `${log.timestamp}|${log.stage}|${log.message}`;
   }
 
-  stageClass(stage: string): Record<string, boolean> {
-    const s = stage.toUpperCase();
+  logStageNgClassMap(logStage: PipelineLogDto['stage']): LogStageNgClassMap {
+    const normalized = logStage.trim().toUpperCase();
     return {
-      'text-tertiary': s === 'INGESTION',
-      'text-on-surface-variant': s === 'PROTOCOL' || s === 'SYSTEM',
-      'text-error': s === 'ANOMALY' || s === 'RISK' || s === 'ALERT',
-      'text-primary': s === 'AI_CORE',
+      'text-tertiary': normalized === 'INGESTION',
+      'text-on-surface-variant':
+        normalized === 'PROTOCOL' || normalized === 'SYSTEM',
+      'text-error':
+        normalized === 'ANOMALY' ||
+        normalized === 'RISK' ||
+        normalized === 'ALERT',
+      'text-primary': normalized === 'AI_CORE',
     };
+  }
+
+  private scrollLogContainerToBottom(): void {
+    const host = this.scrollContainerRef()?.nativeElement;
+    if (!host) {
+      return;
+    }
+    host.scrollTo({ top: host.scrollHeight, behavior: 'smooth' });
   }
 }

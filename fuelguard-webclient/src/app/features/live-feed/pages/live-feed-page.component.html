@@ -17,7 +17,7 @@
   </header>
   <div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter">
     <div class="xl:col-span-7">
-      <app-live-feed-stream [events]="events()" />
+      <app-live-feed-stream [liveFeedEvents]="liveFeedEvents()" />
     </div>
     <div class="xl:col-span-5 space-y-stack-md">
       <div class="glass-panel rounded-xl p-stack-md border border-outline-variant/20">
@@ -25,7 +25,7 @@
           <span class="font-label-caps text-on-surface-variant">AI Confidence Index</span>
           <span class="material-symbols-outlined text-tertiary">shield</span>
         </div>
-        <p class="font-display-lg text-[36px] font-bold text-on-surface">{{ aiConfidenceIndex() }}%</p>
+        <p class="font-display-lg text-[36px] font-bold text-on-surface">{{ formattedAiConfidencePercent() }}%</p>
         <p class="text-[11px] font-data-tabular text-tertiary mt-1">+1.2% FROM PREVIOUS HOUR</p>
       </div>
       <div class="glass-panel rounded-xl p-stack-md border border-outline-variant/20 space-y-stack-sm">
@@ -50,7 +50,7 @@
       <div class="glass-panel rounded-xl p-stack-md border border-outline-variant/20">
         <h3 class="font-label-caps text-label-caps mb-stack-sm">Active Investigations</h3>
         <p class="font-headline-md text-2xl font-bold text-on-surface mb-2">
-          {{ (state.investigations()?.rows?.length ?? 8).toString().padStart(2, '0') }} OPEN
+          {{ (dashboardState.investigations()?.rows?.length ?? 8).toString().padStart(2, '0') }} OPEN
         </p>
         <p class="text-xs text-on-surface-variant">
           Synced with command center — run simulation to refresh intelligence graph.
