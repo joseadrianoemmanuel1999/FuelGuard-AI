@@ -1,7 +1,7 @@
 # Deploy FuelGuard frontend on Vercel
 
 Angular 20 app in `fuelguard-webclient/`.  
-Backend API: **Render** — `https://fuelguard-ai-3bm6.onrender.com`
+Backend API: **Render** — `https://fuelguard-ai-q1p3.onrender.com`
 
 ---
 
@@ -55,7 +55,7 @@ After deploy, test:
 `environment.prod.ts`:
 
 ```ts
-apiBaseUrl: 'https://fuelguard-ai-3bm6.onrender.com/api'
+apiBaseUrl: 'https://fuelguard-ai-q1p3.onrender.com/api'
 ```
 
 Used via `API_BASE_URL` in `app.config.ts`. All HTTP calls go to Render over **HTTPS**.
@@ -118,9 +118,9 @@ Open `http://localhost:4200/command-center` and refresh — `serve` may not mimi
 
 ## Full stack checklist
 
-- [ ] Render API: `GET https://fuelguard-ai-3bm6.onrender.com/health` → 200
+- [ ] Render API: `GET https://fuelguard-ai-q1p3.onrender.com/health` → 200
 - [ ] Vercel: site loads, routes work on refresh
-- [ ] Browser DevTools → Network: requests to `fuelguard-ai-3bm6.onrender.com/api/...`
+- [ ] Browser DevTools → Network: requests to `fuelguard-ai-q1p3.onrender.com/api/...`
 - [ ] No CORS errors
 - [ ] `Cors__AllowedOrigins` includes Vercel URL
 
