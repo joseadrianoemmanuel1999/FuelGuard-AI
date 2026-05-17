@@ -1,2 +1,5 @@
 # Auto detect text files and perform LF normalization
 * text=auto
+
+Dockerfile text eol=lf
+render.yaml text eol=lf

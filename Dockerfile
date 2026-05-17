@@ -1,3 +1,6 @@
+# FuelGuard API — ASP.NET Core 8 (Render Docker runtime)
+# Build context: repository root (dockerContext: .)
+
 FROM mcr.microsoft.com/dotnet/sdk:8.0 AS build
 WORKDIR /src
 
@@ -16,16 +19,23 @@ COPY src/ src/
 RUN dotnet publish src/FuelGuard.Api/FuelGuard.Api.csproj \
     -c Release \
     -o /app/publish \
-    --no-restore
+    --no-restore \
+    /p:UseAppHost=false
 
 FROM mcr.microsoft.com/dotnet/aspnet:8.0 AS final
 WORKDIR /app
 
 ENV ASPNETCORE_ENVIRONMENT=Production
-ENV ASPNETCORE_URLS=http://0.0.0.0:8080
+# Render injects PORT + ASPNETCORE_URLS at runtime (see render.yaml). Do not hardcode a port here.
+
+RUN groupadd --gid 10001 appgroup \
+    && useradd --uid 10001 --gid appgroup --create-home --home-dir /app appuser \
+    && chown -R appuser:appgroup /app
+
+COPY --from=build --chown=appuser:appgroup /app/publish .
+
+USER appuser
 
 EXPOSE 8080
-
-COPY --from=build /app/publish .
 
 ENTRYPOINT ["dotnet", "FuelGuard.Api.dll"]

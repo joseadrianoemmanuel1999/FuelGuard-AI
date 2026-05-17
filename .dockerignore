@@ -1,5 +1,6 @@
 .git
 .github
+artifacts
 .vs
 **/.vs
 **/bin

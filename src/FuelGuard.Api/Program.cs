@@ -1,17 +1,31 @@
+using System.Text.Json;
 using FuelGuard.Agents;
 using FuelGuard.Application;
 using FuelGuard.Infrastructure;
 using FuelGuard.Infrastructure.Persistence;
+using Microsoft.AspNetCore.Diagnostics.HealthChecks;
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Diagnostics.HealthChecks;
 
 var builder = WebApplication.CreateBuilder(args);
 
+var port = Environment.GetEnvironmentVariable("PORT");
+if (!string.IsNullOrWhiteSpace(port) && string.IsNullOrWhiteSpace(Environment.GetEnvironmentVariable("ASPNETCORE_URLS")))
+    builder.WebHost.UseUrls($"http://+:{port}");
+
 builder.Logging.ClearProviders();
-builder.Logging.AddSimpleConsole(options =>
+if (builder.Environment.IsDevelopment())
 {
-    options.TimestampFormat = "HH:mm:ss ";
-    options.SingleLine = true;
-});
+    builder.Logging.AddSimpleConsole(options =>
+    {
+        options.TimestampFormat = "HH:mm:ss ";
+        options.SingleLine = true;
+    });
+}
+else
+{
+    builder.Logging.AddJsonConsole(options => options.IncludeScopes = true);
+}
 
 builder.Services.AddApplication();
 builder.Services.AddInfrastructure(builder.Configuration);
@@ -32,21 +46,31 @@ builder.Services.AddCors(options =>
             .AllowAnyHeader()
             .AllowAnyMethod());
 });
-builder.Services.AddEndpointsApiExplorer();
-builder.Services.AddSwaggerGen(options =>
+
+builder.Services.AddHealthChecks()
+    .AddDbContextCheck<FuelGuardDbContext>("database", tags: ["ready", "db"]);
+
+if (builder.Environment.IsDevelopment())
 {
-    options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+    builder.Services.AddEndpointsApiExplorer();
+    builder.Services.AddSwaggerGen(options =>
     {
-        Title = "FuelGuard AI",
-        Version = "v1",
-        Description = "Multi-agent, event-driven fuel integrity API (hackathon build)."
+        options.SwaggerDoc("v1", new Microsoft.OpenApi.Models.OpenApiInfo
+        {
+            Title = "FuelGuard AI",
+            Version = "v1",
+            Description = "Multi-agent, event-driven fuel integrity API (hackathon build)."
+        });
     });
-});
+}
 
 var app = builder.Build();
 
-await using (var scope = app.Services.CreateAsyncScope())
+var startupLogger = app.Services.GetRequiredService<ILoggerFactory>().CreateLogger("Startup");
+
+try
 {
+    await using var scope = app.Services.CreateAsyncScope();
     var db = scope.ServiceProvider.GetRequiredService<FuelGuardDbContext>();
 
     if (db.Database.IsRelational())
@@ -56,18 +80,58 @@ await using (var scope = app.Services.CreateAsyncScope())
 
     var seeder = scope.ServiceProvider.GetRequiredService<DemoDataSeeder>();
     await seeder.SeedAsync(db);
+
+    startupLogger.LogInformation("Database initialization completed.");
+}
+catch (Exception ex)
+{
+    startupLogger.LogError(ex, "Database initialization failed.");
+    throw;
 }
 
-app.UseSwagger();
-app.UseSwaggerUI(options =>
+if (app.Environment.IsDevelopment())
 {
-    options.SwaggerEndpoint("/swagger/v1/swagger.json", "FuelGuard AI v1");
-});
+    app.UseSwagger();
+    app.UseSwaggerUI(options =>
+    {
+        options.SwaggerEndpoint("/swagger/v1/swagger.json", "FuelGuard AI v1");
+    });
+}
 
 app.UseCors("FuelGuardWeb");
 
 app.MapControllers();
 
-app.MapGet("/health", () => Results.Ok(new { status = "ok", product = "FuelGuard AI" }));
+app.MapHealthChecks("/health", new HealthCheckOptions
+{
+    Predicate = _ => true,
+    ResponseWriter = WriteHealthResponse
+});
+
+app.MapHealthChecks("/health/ready", new HealthCheckOptions
+{
+    Predicate = check => check.Tags.Contains("ready"),
+    ResponseWriter = WriteHealthResponse
+});
 
 app.Run();
+
+static Task WriteHealthResponse(HttpContext context, HealthReport report)
+{
+    context.Response.ContentType = "application/json";
+
+    var payload = new
+    {
+        status = report.Status == HealthStatus.Healthy ? "ok" : report.Status.ToString().ToLowerInvariant(),
+        product = "FuelGuard AI",
+        checks = report.Entries.ToDictionary(
+            e => e.Key,
+            e => e.Value.Status.ToString())
+    };
+
+    context.Response.StatusCode = report.Status == HealthStatus.Healthy
+        ? StatusCodes.Status200OK
+        : StatusCodes.Status503ServiceUnavailable;
+
+    return context.Response.WriteAsync(JsonSerializer.Serialize(payload));
+}

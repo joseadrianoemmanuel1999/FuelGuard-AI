@@ -1,8 +1,16 @@
+# FuelGuard AI — Render Blueprint (backend API only)
+# Frontend (Angular): deploy separately (Static Site / Vercel / Netlify).
+#
+# Dashboard must match this file when using Blueprint sync:
+#   Environment: Docker | Root Directory: (empty) | Build Command: (empty) | Start Command: (empty)
+
 services:
   - type: web
     name: fuelguard-ai
     runtime: docker
     plan: free
+    region: frankfurt
+    autoDeploy: true
     dockerfilePath: ./Dockerfile
     dockerContext: .
     healthCheckPath: /health

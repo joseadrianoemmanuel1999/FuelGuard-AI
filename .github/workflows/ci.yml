@@ -28,6 +28,20 @@ jobs:
       - name: Build
         run: dotnet build FuelGuard.sln --configuration Release --no-restore
 
+  docker-api:
+    name: Docker image (API)
+    runs-on: ubuntu-latest
+    needs: backend
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Build Docker image
+        run: docker build -t fuelguard-api:ci .
+
+      - name: Verify published DLL in image
+        run: |
+          docker run --rm fuelguard-api:ci ls -la FuelGuard.Api.dll
+
   frontend:
     name: Angular build
     runs-on: ubuntu-latest
