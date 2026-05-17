@@ -1,4 +1,4 @@
 export const environment = {
   production: true,
-  apiBaseUrl: 'https://localhost:5001/api',
+  apiBaseUrl: 'https://fuelguard-ai-3bm6.onrender.com/api',
 };

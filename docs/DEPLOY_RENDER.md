@@ -1,7 +1,7 @@
 # Deploy FuelGuard API on Render
 
 Backend: **ASP.NET Core 8** (`src/FuelGuard.Api`) — Docker only.  
-Frontend: **Angular** (`fuelguard-webclient`) — deploy on a **separate** host (not this Render Web Service).
+Frontend: **Angular** (`fuelguard-webclient`) — deploy on **Vercel** (see [DEPLOY_VERCEL.md](./DEPLOY_VERCEL.md)).
 
 ---
 
@@ -54,7 +54,7 @@ After sync, confirm **Build Command** and **Start Command** are empty in the ser
 | `ASPNETCORE_ENVIRONMENT` | `Production` (set in `render.yaml`) |
 | `ASPNETCORE_URLS` | `http://0.0.0.0:$PORT` (set in `render.yaml`) |
 | `ConnectionStrings__FuelGuard` | Supabase PostgreSQL connection string **with password** |
-| `Cors__AllowedOrigins` | `https://your-frontend.example.com` |
+| `Cors__AllowedOrigins` | `https://your-app.vercel.app` (exact Vercel production URL) |
 | `AI__ApiKey` | Hugging Face token (optional) |
 
 Supabase example:
@@ -113,7 +113,7 @@ dir ./artifacts/publish/FuelGuard.Api.dll
 - [ ] Build log shows `docker build` (no `yarn` / `npm` / native `dotnet`)
 - [ ] `GET https://<service>.onrender.com/health` → `200` JSON
 - [ ] `ConnectionStrings__FuelGuard` set in Render
-- [ ] CORS includes production frontend URL
+- [ ] `Cors__AllowedOrigins` includes Vercel URL (see [DEPLOY_VERCEL.md](./DEPLOY_VERCEL.md))
 - [ ] Swagger only in Development (not exposed in Production)
 - [ ] GitHub `RENDER_DEPLOY_HOOK` secret configured for `.github/workflows/deploy-render.yml`
 

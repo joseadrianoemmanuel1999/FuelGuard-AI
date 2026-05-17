@@ -3,3 +3,4 @@
 
 Dockerfile text eol=lf
 render.yaml text eol=lf
+fuelguard-webclient/vercel.json text eol=lf
