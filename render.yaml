@@ -1,0 +1,19 @@
+services:
+  - type: web
+    name: fuelguard-ai
+    runtime: docker
+    plan: free
+    dockerfilePath: ./Dockerfile
+    dockerContext: .
+    healthCheckPath: /health
+    envVars:
+      - key: ASPNETCORE_ENVIRONMENT
+        value: Production
+      - key: ASPNETCORE_URLS
+        value: http://0.0.0.0:$PORT
+      - key: ConnectionStrings__FuelGuard
+        sync: false
+      - key: AI__ApiKey
+        sync: false
+      - key: Cors__AllowedOrigins
+        sync: false

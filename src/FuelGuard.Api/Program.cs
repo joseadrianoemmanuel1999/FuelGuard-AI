@@ -18,14 +18,17 @@ builder.Services.AddInfrastructure(builder.Configuration);
 builder.Services.AddAgents();
 
 builder.Services.AddControllers();
+
+var corsOrigins = builder.Configuration["Cors:AllowedOrigins"]?
+    .Split(',', StringSplitOptions.RemoveEmptyEntries | StringSplitOptions.TrimEntries)
+    ?? ["http://localhost:4200", "https://localhost:4200"];
+
 builder.Services.AddCors(options =>
 {
     options.AddPolicy(
         "FuelGuardWeb",
         policy => policy
-            .WithOrigins(
-                "http://localhost:4200",
-                "https://localhost:4200")
+            .WithOrigins(corsOrigins)
             .AllowAnyHeader()
             .AllowAnyMethod());
 });

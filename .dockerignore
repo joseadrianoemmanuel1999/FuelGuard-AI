@@ -1,0 +1,16 @@
+.git
+.github
+.vs
+**/.vs
+**/bin
+**/obj
+**/TestResults
+**/*.user
+**/*.suo
+
+fuelguard-webclient/node_modules
+fuelguard-webclient/dist
+fuelguard-webclient/.angular
+
+**/appsettings.*.local.json
+secrets.json
