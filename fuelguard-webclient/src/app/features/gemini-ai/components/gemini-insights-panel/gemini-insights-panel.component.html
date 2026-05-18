@@ -1,0 +1,74 @@
+<app-card-container panelClass="glass-panel rounded-lg p-stack-lg h-full">
+  <div class="flex items-center justify-between gap-stack-md mb-stack-lg">
+    <div class="flex items-center gap-stack-sm">
+      <span class="material-symbols-outlined text-primary">auto_awesome</span>
+      <h3 class="font-headline-md text-headline-md font-bold text-on-surface">AI Insights</h3>
+    </div>
+    @if (insights()?.poweredByGemini) {
+      <span class="font-label-caps text-label-caps px-stack-sm py-1 rounded-full bg-primary/15 text-primary border border-primary/30">
+        Live AI
+      </span>
+    }
+  </div>
+
+  @if (loading()) {
+    <div class="space-y-stack-md animate-pulse">
+      @for (_ of [1, 2, 3, 4]; track $index) {
+        <div class="h-4 bg-surface-container-high rounded w-full"></div>
+      }
+    </div>
+  } @else if (error(); as err) {
+    <p class="text-on-error-container text-body-md" role="alert">{{ err }}</p>
+  } @else if (insights(); as data) {
+    @if (data.disclaimer) {
+      <p class="text-on-surface-variant text-body-sm mb-stack-md border-l-2 border-tertiary pl-stack-sm">{{ data.disclaimer }}</p>
+    }
+
+    <section class="mb-stack-lg">
+      <h4 class="font-label-caps text-label-caps text-on-surface-variant mb-stack-sm">Executive Summary</h4>
+      <p class="text-body-md text-on-surface leading-relaxed">{{ data.executiveSummary }}</p>
+    </section>
+
+    <section class="mb-stack-lg">
+      <h4 class="font-label-caps text-label-caps text-on-surface-variant mb-stack-sm">Operational Insights</h4>
+      <ul class="space-y-stack-sm">
+        @for (item of data.operationalInsights; track $index) {
+          <li class="flex gap-stack-sm text-body-md text-on-surface">
+            <span class="material-symbols-outlined text-primary text-base">insights</span>
+            <span>{{ item }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <section class="mb-stack-lg">
+      <h4 class="font-label-caps text-label-caps text-on-surface-variant mb-stack-sm">Anomaly Highlights</h4>
+      <ul class="space-y-stack-sm">
+        @for (item of data.anomalyHighlights; track $index) {
+          <li class="flex gap-stack-sm text-body-md text-on-surface">
+            <span class="material-symbols-outlined text-error text-base">warning</span>
+            <span>{{ item }}</span>
+          </li>
+        }
+      </ul>
+    </section>
+
+    <section class="mb-stack-lg">
+      <h4 class="font-label-caps text-label-caps text-on-surface-variant mb-stack-sm">Recommendations</h4>
+      <ul class="space-y-stack-sm">
+        @for (item of data.recommendations; track $index) {
+          <li class="text-body-md text-on-surface pl-stack-md border-l border-outline-variant">{{ item }}</li>
+        }
+      </ul>
+    </section>
+
+    <section>
+      <h4 class="font-label-caps text-label-caps text-on-surface-variant mb-stack-sm">Risk Observations</h4>
+      <ul class="space-y-stack-sm">
+        @for (item of data.riskObservations; track $index) {
+          <li class="text-body-md text-on-surface-variant">{{ item }}</li>
+        }
+      </ul>
+    </section>
+  }
+</app-card-container>

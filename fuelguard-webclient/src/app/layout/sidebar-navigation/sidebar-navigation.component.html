@@ -57,6 +57,15 @@
         <span class="font-body-md">Log Terminal</span>
       </a>
       <a
+        routerLink="/intelligence"
+        routerLinkActive="bg-secondary-container text-on-secondary-container rounded-lg shadow-[0_0_15px_rgba(192,193,255,0.2)]"
+        class="flex items-center gap-stack-md px-margin-mobile py-stack-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200"
+        (click)="closeMobile.emit()"
+      >
+        <span class="material-symbols-outlined">analytics</span>
+        <span class="font-body-md">Operational Intelligence</span>
+      </a>
+      <a
         routerLink="/risk-reports"
         routerLinkActive="bg-secondary-container text-on-secondary-container rounded-lg shadow-[0_0_15px_rgba(192,193,255,0.2)]"
         class="flex items-center gap-stack-md px-margin-mobile py-stack-sm text-on-surface-variant hover:text-on-surface hover:bg-surface-container-highest transition-colors duration-200"

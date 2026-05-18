@@ -28,3 +28,19 @@ POST {{FuelGuardApi_HostAddress}}/api/fuel-transactions/demo/spike
 Accept: application/json
 
 ###
+
+GET {{FuelGuardApi_HostAddress}}/api/gemini/insights
+Accept: application/json
+
+###
+
+POST {{FuelGuardApi_HostAddress}}/api/gemini/chat
+Content-Type: application/json
+Accept: application/json
+
+{
+  "question": "Qual posto apresenta maior risco operacional?",
+  "periodHint": "30d"
+}
+
+###

@@ -41,6 +41,12 @@ export const routes: Routes = [
           ),
       },
       {
+        path: 'intelligence',
+        loadComponent: () =>
+          import('./features/gemini-ai/pages/gemini-copilot.page').then((m) => m.GeminiCopilotPage),
+      },
+      { path: 'gemini', redirectTo: 'intelligence', pathMatch: 'full' },
+      {
         path: 'team-access',
         data: { searchPlaceholder: 'Personnel search (Cmd+K)' },
         loadComponent: () =>

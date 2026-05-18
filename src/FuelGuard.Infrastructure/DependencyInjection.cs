@@ -1,6 +1,8 @@
 using FuelGuard.Application.Abstractions;
 using FuelGuard.Domain.Entities;
+using FuelGuard.Application.Abstractions.Gemini;
 using FuelGuard.Infrastructure.Ai;
+using FuelGuard.Infrastructure.Ai.Gemini;
 using FuelGuard.Infrastructure.Events;
 using FuelGuard.Infrastructure.Persistence;
 using FuelGuard.Shared.Abstractions;
@@ -66,6 +68,19 @@ public static class DependencyInjection
 
             return sp.GetRequiredService<HuggingFaceAiService>();
         });
+
+        services.Configure<GeminiOptions>(configuration.GetSection(GeminiOptions.SectionName));
+        services.AddHttpClient(GeminiClient.HttpClientName, (sp, client) =>
+        {
+            var opts = sp.GetRequiredService<IOptions<GeminiOptions>>().Value;
+            var seconds = Math.Clamp(opts.RequestTimeoutSeconds, 15, 120);
+            client.Timeout = TimeSpan.FromSeconds(seconds);
+        });
+        services.AddScoped<GeminiOperationalContextBuilder>();
+        services.AddSingleton<GeminiClient>();
+        services.AddScoped<GeminiChatService>();
+        services.AddScoped<GeminiInsightsService>();
+        services.AddScoped<IGeminiService, GeminiService>();
 
         return services;
     }

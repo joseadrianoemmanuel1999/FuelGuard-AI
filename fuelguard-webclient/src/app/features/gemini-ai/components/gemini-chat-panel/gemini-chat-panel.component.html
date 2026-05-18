@@ -1,0 +1,134 @@
+<app-card-container panelClass="glass-panel rounded-lg flex flex-col h-full min-h-[32rem]">
+  <div class="p-stack-lg border-b border-outline-variant/40 flex items-center justify-between gap-stack-md">
+    <div>
+      <div class="flex items-center gap-stack-sm">
+        <span class="material-symbols-outlined text-primary">psychology</span>
+        <h3 class="font-headline-md text-headline-md font-bold text-on-surface">Operational Copilot</h3>
+      </div>
+      <p class="text-body-sm text-on-surface-variant mt-1">Ask questions grounded in live FuelGuard operational data</p>
+    </div>
+    <span class="font-label-caps text-label-caps px-stack-sm py-1 rounded-full bg-secondary-container/40 text-on-secondary-container">
+      Enterprise AI
+    </span>
+  </div>
+
+  <div #scrollHost class="flex-1 overflow-y-auto p-stack-lg space-y-stack-md">
+    @if (messages().length === 0 && !loading()) {
+      <div class="text-on-surface-variant text-body-md space-y-stack-md">
+        <p>Ask operational questions about risk, anomalies, fuel variance, and investigations.</p>
+        <div class="flex flex-wrap gap-stack-sm">
+          @for (s of suggestions; track s) {
+            <button
+              type="button"
+              class="text-left text-body-sm px-stack-md py-stack-sm rounded-lg border border-outline-variant/50 hover:border-primary/50 hover:bg-surface-container-high transition-colors"
+              (click)="useSuggestion(s)"
+            >
+              {{ s }}
+            </button>
+          }
+        </div>
+      </div>
+    }
+
+    @for (msg of messages(); track msg.id) {
+      <div
+        class="flex"
+        [class.justify-end]="msg.role === 'user'"
+        [class.justify-start]="msg.role === 'assistant'"
+      >
+        <div
+          class="max-w-[92%] rounded-lg px-stack-md py-stack-sm"
+          [class.bg-primary]="msg.role === 'user'"
+          [class.text-on-primary]="msg.role === 'user'"
+          [class.bg-surface-container-high]="msg.role === 'assistant'"
+          [class.text-on-surface]="msg.role === 'assistant'"
+        >
+          @if (msg.role === 'assistant' && msg.riskLevel) {
+            <span
+              class="inline-block font-label-caps text-label-caps text-xs mb-2 px-2 py-0.5 rounded border"
+              [ngClass]="riskBadgeClass(msg.riskLevel)"
+            >
+              Risk: {{ msg.riskLevel }}
+            </span>
+          }
+
+          @if (msg.isTyping) {
+            <span class="inline-flex gap-1 items-center text-on-surface-variant">
+              <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+              <span class="w-2 h-2 rounded-full bg-primary animate-pulse [animation-delay:150ms]"></span>
+              <span class="w-2 h-2 rounded-full bg-primary animate-pulse [animation-delay:300ms]"></span>
+            </span>
+          } @else if (msg.role === 'assistant') {
+            <div class="prose-invert text-body-md leading-relaxed" [innerHTML]="msg.content | simpleMarkdown"></div>
+            @if (msg.explainability) {
+              <p class="mt-stack-md text-body-sm text-on-surface-variant border-t border-outline-variant/30 pt-stack-sm">
+                <strong>Explainability:</strong> {{ msg.explainability }}
+              </p>
+            }
+            @if (msg.recommendations?.length) {
+              <ul class="mt-stack-sm space-y-1 text-body-sm">
+                @for (rec of msg.recommendations; track rec) {
+                  <li class="flex gap-1"><span>→</span><span>{{ rec }}</span></li>
+                }
+              </ul>
+            }
+          } @else {
+            <p class="text-body-md whitespace-pre-wrap">{{ msg.content }}</p>
+          }
+        </div>
+      </div>
+    }
+
+    @if (loading() && messages()[messages().length - 1]?.role !== 'assistant') {
+      <div class="flex justify-start">
+        <div class="bg-surface-container-high rounded-lg px-stack-md py-stack-sm">
+          <span class="inline-flex gap-1">
+            <span class="w-2 h-2 rounded-full bg-primary animate-pulse"></span>
+            <span class="w-2 h-2 rounded-full bg-primary animate-pulse [animation-delay:150ms]"></span>
+            <span class="w-2 h-2 rounded-full bg-primary animate-pulse [animation-delay:300ms]"></span>
+          </span>
+        </div>
+      </div>
+    }
+  </div>
+
+  @if (error(); as err) {
+    <p class="px-stack-lg text-body-sm text-on-error-container" role="alert">{{ err }}</p>
+  }
+
+  <form class="p-stack-lg border-t border-outline-variant/40 space-y-stack-sm" (ngSubmit)="submit()">
+    <div class="grid grid-cols-1 sm:grid-cols-2 gap-stack-sm">
+      <input
+        type="text"
+        class="w-full rounded-lg bg-surface-container-high border border-outline-variant/50 px-stack-md py-stack-sm text-body-md text-on-surface placeholder:text-on-surface-variant"
+        placeholder="Station filter (optional)"
+        [(ngModel)]="stationHint"
+        name="stationHint"
+      />
+      <input
+        type="text"
+        class="w-full rounded-lg bg-surface-container-high border border-outline-variant/50 px-stack-md py-stack-sm text-body-md text-on-surface placeholder:text-on-surface-variant"
+        placeholder="Period (e.g. 7d, 30d)"
+        [(ngModel)]="periodHint"
+        name="periodHint"
+      />
+    </div>
+    <div class="flex gap-stack-sm">
+      <input
+        type="text"
+        class="flex-1 rounded-lg bg-surface-container-high border border-outline-variant/50 px-stack-md py-stack-sm text-body-md text-on-surface placeholder:text-on-surface-variant"
+        placeholder="Pergunta operacional..."
+        [(ngModel)]="question"
+        name="question"
+        [disabled]="loading()"
+      />
+      <button
+        type="submit"
+        class="px-stack-lg py-stack-sm rounded-lg bg-primary text-on-primary font-bold disabled:opacity-50"
+        [disabled]="loading() || !question.trim()"
+      >
+        <span class="material-symbols-outlined align-middle">send</span>
+      </button>
+    </div>
+  </form>
+</app-card-container>

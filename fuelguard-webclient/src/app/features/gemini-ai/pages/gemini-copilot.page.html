@@ -1,0 +1,35 @@
+<div class="px-margin-mobile lg:px-margin-desktop pb-margin-mobile lg:pb-margin-desktop pt-margin-mobile lg:pt-margin-desktop min-h-[calc(100vh-4rem)]">
+  <app-dashboard-chrome>
+    <header class="mb-stack-lg">
+      <div class="flex flex-wrap items-center gap-stack-md">
+        <span class="material-symbols-outlined text-primary text-4xl">hub</span>
+        <div>
+          <h1 class="font-headline-lg text-headline-lg font-black tracking-tight text-on-surface">
+            Operational Intelligence Hub
+          </h1>
+          <p class="font-body-md text-on-surface-variant">
+            Enterprise AI layer for risk analysis, anomaly detection, and executive decision support.
+          </p>
+        </div>
+      </div>
+    </header>
+
+    <div class="grid grid-cols-1 xl:grid-cols-12 gap-gutter items-stretch">
+      <div class="xl:col-span-7 min-h-[36rem]">
+        <app-gemini-chat-panel
+          [messages]="state.messages()"
+          [loading]="state.chatLoading()"
+          [error]="state.chatError()"
+          (sendQuestion)="onSend($event)"
+        />
+      </div>
+      <div class="xl:col-span-5 min-h-[36rem]">
+        <app-gemini-insights-panel
+          [insights]="state.insights()"
+          [loading]="state.insightsLoading()"
+          [error]="state.insightsError()"
+        />
+      </div>
+    </div>
+  </app-dashboard-chrome>
+</div>
