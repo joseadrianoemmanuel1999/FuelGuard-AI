@@ -28,3 +28,7 @@ TestResults/
 *.trx
 coverage*.json
 coverage*.xml
+
+## Local deploy notes (not versioned)
+docs/
+fuelguard-webclient/README.md
