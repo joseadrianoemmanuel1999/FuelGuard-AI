@@ -39,7 +39,7 @@ Content-Type: application/json
 Accept: application/json
 
 {
-  "question": "Qual posto apresenta maior risco operacional?",
+  "question": "Which station has the highest operational risk?",
   "periodHint": "30d"
 }
 

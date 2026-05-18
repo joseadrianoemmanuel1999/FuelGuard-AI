@@ -33,10 +33,10 @@ export class GeminiChatPanelComponent {
   private readonly scrollHost = viewChild<ElementRef<HTMLElement>>('scrollHost');
 
   protected readonly suggestions = [
-    'Qual posto apresenta maior risco operacional?',
-    'Existe comportamento suspeito nas últimas transações?',
-    'Resume os principais riscos e anomalias.',
-    'Quais ações recomendas para investigação imediata?',
+    'Which station has the highest operational risk?',
+    'Is there suspicious behavior in recent transactions?',
+    'Summarize the main risks and anomalies.',
+    'What actions do you recommend for immediate investigation?',
   ];
 
   protected submit(): void {

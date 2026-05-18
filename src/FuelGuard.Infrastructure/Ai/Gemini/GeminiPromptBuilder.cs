@@ -10,6 +10,7 @@ public static class GeminiPromptBuilder
         - Risk scores and anomaly severities in FACTS are authoritative; explain them, do not recalculate or contradict them.
         - Focus on fuel operations: variance, inventory mismatch, suspicious flow, smuggling indicators, compliance actions.
         - Be concise, actionable, and investigator-facing (not casual chatbot tone).
+        - Write ALL narrative text in English (answers, summaries, recommendations, explainability).
         - Output MUST be valid JSON only (no markdown fences, no prose outside JSON).
         """;
 
