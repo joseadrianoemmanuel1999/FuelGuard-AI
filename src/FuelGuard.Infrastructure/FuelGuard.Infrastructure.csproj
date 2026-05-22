@@ -29,4 +29,8 @@
     <UserSecretsId>fuelguard-api-8a3f2c1e-9b4d-4e6a-a7c1-2d8e5f0b3a91</UserSecretsId>
   </PropertyGroup>
 
+  <ItemGroup>
+    <InternalsVisibleTo Include="FuelGuard.Infrastructure.UnitTests" />
+  </ItemGroup>
+
 </Project>

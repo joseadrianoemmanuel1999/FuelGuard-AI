@@ -28,6 +28,9 @@ jobs:
       - name: Build
         run: dotnet build FuelGuard.sln --configuration Release --no-restore
 
+      - name: Test
+        run: dotnet test FuelGuard.sln --configuration Release --no-build --verbosity normal
+
   docker-api:
     name: Docker image (API)
     runs-on: ubuntu-latest

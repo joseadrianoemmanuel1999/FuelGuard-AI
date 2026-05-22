@@ -1,0 +1,7 @@
+<Project Sdk="Microsoft.NET.Sdk">
+
+  <ItemGroup>
+    <ProjectReference Include="..\..\src\FuelGuard.Infrastructure\FuelGuard.Infrastructure.csproj" />
+  </ItemGroup>
+
+</Project>
